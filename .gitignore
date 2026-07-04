@@ -1,0 +1,52 @@
+# ===========================
+# Dependencies
+# ===========================
+
+Backend/node_modules/
+Frontend/node_modules/
+
+# ===========================
+# Environment Variables
+# ===========================
+
+Backend/.env
+Frontend/.env
+
+# ===========================
+# Prisma Generated Client
+# ===========================
+
+Backend/generated/prisma/
+
+# ===========================
+# Build Output
+# ===========================
+
+Frontend/dist/
+Frontend/build/
+
+Backend/dist/
+Backend/build/
+
+# ===========================
+# Logs
+# ===========================
+
+*.log
+logs/
+
+# ===========================
+# Operating System
+# ===========================
+
+.DS_Store
+Thumbs.db
+
+# ===========================
+# IDE
+# ===========================
+
+.vscode/
+!.vscode/extensions.json
+
+.idea/

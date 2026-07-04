@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum BudgetType {
+  INCOME
+  EXPENSE
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+model User {
+  id    String @id @default(uuid())
+  email String @unique
+  username String
+  passwordHash String
+  globalDailyLimit   Decimal?
+  globalMonthlyLimit Decimal?
+  globalYearlyLimit Decimal?
+  budgets      Budget[]
+  transactions Transaction[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("users")
+}
+
+model Budget {
+  id String @id @default(uuid())
+  ownerId String
+  owner   User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name String
+  description String?
+  icon String?
+  budgetType BudgetType
+  dailyLimit   Decimal?
+  weeklyLimit  Decimal?
+  monthlyLimit Decimal?
+  transactions Transaction[]  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("budgets")
+}
+
+model Transaction {
+  id String @id @default(uuid())
+  ownerId String
+  owner   User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  budgetId String?
+  budget   Budget? @relation(fields: [budgetId], references: [id], onDelete: SetNull)
+  title String
+  amount Decimal
+  type TransactionType
+  transactionDate DateTime @default(now())
+  note String?
+  colorTag String?
+  icon String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("transactions")
+}
