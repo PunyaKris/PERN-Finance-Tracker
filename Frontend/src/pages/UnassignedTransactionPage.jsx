@@ -8,6 +8,7 @@ import TransactionForm from "../components/TransactionForm";
 import DeleteConformation from "../components/DeleteConformation";
 import { deleteTransaction } from "../services/transactionService";
 import AppLayout from "../components/AppLayout";
+import "./UnconsideredTransactionsPage.css";
 
 function UnassignedTransaction() {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ function UnassignedTransaction() {
 
   if (transactions.length > 0) {
     Transactions = (
-      <div>
+      <section className="unconsidered-transactions-page__transactions">
         {transactions.map((transaction) => (
           <Transaction
             key={transaction.id}
@@ -75,17 +76,48 @@ function UnassignedTransaction() {
             onDeleteTransactionPressed={handleDeletePress}
           />
         ))}
-      </div>
+      </section>
     );
   } else {
-    Transactions = <h4>No Unconsidered Transactions</h4>;
+    Transactions = (
+      <div className="unconsidered-transactions-page__empty">
+        <h4>No unconsidered transactions.</h4>
+        <p>Everything currently looks assigned and tidy.</p>
+      </div>
+    );
   }
 
   return (
     <AppLayout>
-      <p>Transactions that are not assigned to any budget.</p>
-      <h1> Unconsidered Transactions</h1>
-      {Transactions}
+      <div className="unconsidered-transactions-page">
+        <button
+          className="unconsidered-transactions-page__back"
+          onClick={() => navigate("/dashboard")}
+        >
+          ← Back to Dashboard
+        </button>
+
+        <header className="unconsidered-transactions-page__header">
+          <div className="unconsidered-transactions-page__title-group">
+            <h1 className="unconsidered-transactions-page__title">
+              Unconsidered Transactions
+            </h1>
+            <p className="unconsidered-transactions-page__subtitle">
+              Transactions that have not yet been assigned to any budget.
+            </p>
+          </div>
+
+          <button
+            className="unconsidered-transactions-page__action"
+            onClick={() => setShowEditModal(true)}
+          >
+            ➕ Add Transaction
+          </button>
+        </header>
+
+        {Transactions}
+      </div>
+
       {showEditModal && (
         <Modal>
           <TransactionForm
@@ -103,7 +135,6 @@ function UnassignedTransaction() {
           />
         </Modal>
       )}
-      <button onClick={() => navigate("/dashboard")}> Back </button>
     </AppLayout>
   );
 }

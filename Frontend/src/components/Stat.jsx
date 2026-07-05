@@ -1,10 +1,11 @@
+import "./Stat.css";
+
 const Stat = ({ title, value }) => {
   return (
-    <>
-      <div>
-        {title}: {value}
-      </div>
-    </>
+    <div className="stat">
+      <span className="stat__title">{title}</span>
+      <span className="stat__value">{value}</span>
+    </div>
   );
 };
 

@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserServices, editUserService } from "../services/userServices";
 import AppLayout from "../components/AppLayout";
+import StatsCard from "../components/StatsCard";
+import Stat from "../components/Stat";
+import "./ProfilePage.css";
+
 const ProfilePage = () => {
   const navigate = useNavigate();
 
@@ -42,66 +46,134 @@ const ProfilePage = () => {
 
   return (
     <AppLayout>
-      <h1>User</h1>
-      {editingMode ? (
-        <>
-          <label>Username</label>
-          <input
-            value={username}
-            type="text"
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </>
-      ) : (
-        <h3> Username: {username} </h3>
-      )}
-      <h3> Email: {email} </h3>
+      <div className="profile-page">
+        <header className="profile-page__header">
+          <div className="profile-page__title-group">
+            <h1 className="profile-page__title">Profile</h1>
+            <p className="profile-page__subtitle">
+              Manage your personal information and global spending limits.
+            </p>
+          </div>
+        </header>
 
-      {editingMode ? (
-        <>
-          <label>Daily Limit</label>
-          <input
-            value={globalDailyLimit}
-            type="number"
-            onChange={(event) => setGlobalDailyLimit(event.target.value)}
-          />
-        </>
-      ) : (
-        <h3> Daily Limit: {globalDailyLimit} </h3>
-      )}
+        <section className="profile-page__section">
+          <h2 className="profile-page__section-title">Profile Information</h2>
+          <div className="profile-page__card">
+            {editingMode ? (
+              <div className="profile-page__field-group">
+                <label className="profile-page__label">Username</label>
+                <input
+                  className="profile-page__input"
+                  value={username}
+                  type="text"
+                  onChange={(event) => setUsername(event.target.value)}
+                />
+              </div>
+            ) : (
+              <div className="profile-page__info-row">
+                <span className="profile-page__info-label">Name</span>
+                <span className="profile-page__info-value">{username}</span>
+              </div>
+            )}
 
-      {editingMode ? (
-        <>
-          <label>Monthly Limit</label>
-          <input
-            value={globalMonthlyLimit}
-            type="number"
-            onChange={(event) => setGlobalMonthlyLimit(event.target.value)}
-          />
-        </>
-      ) : (
-        <h3> Monthly Limit: {globalMonthlyLimit} </h3>
-      )}
+            <div className="profile-page__info-row">
+              <span className="profile-page__info-label">Email</span>
+              <span className="profile-page__info-value">{email}</span>
+            </div>
+          </div>
+        </section>
 
-      {editingMode ? (
-        <>
-          <label>Yearly Limit</label>
-          <input
-            value={globalYearlyLimit}
-            type="number"
-            onChange={(event) => setGlobalYearlyLimit(event.target.value)}
-          />
-        </>
-      ) : (
-        <h3> Yearly Limit: {globalYearlyLimit} </h3>
-      )}
+        <section className="profile-page__section">
+          <h2 className="profile-page__section-title">Global Budget Limits</h2>
+          <div className="profile-page__stats-grid">
+            <StatsCard title="Daily Limit">
+              {editingMode ? (
+                <div className="profile-page__field-group">
+                  <label className="profile-page__label">Daily Limit</label>
+                  <input
+                    className="profile-page__input"
+                    value={globalDailyLimit}
+                    type="number"
+                    onChange={(event) =>
+                      setGlobalDailyLimit(event.target.value)
+                    }
+                  />
+                </div>
+              ) : (
+                <>
+                  <Stat title="Spent Today" value={globalDailyLimit} />
+                  <Stat title="Daily Limit" value={globalDailyLimit} />
+                  <Stat title="Today Left" value={globalDailyLimit} />
+                </>
+              )}
+            </StatsCard>
 
-      <button
-        onClick={editingMode ? saveUserHandler : () => setEditingMode(true)}
-      >
-        {editingMode ? "Save" : "✏️ Edit"}
-      </button>
-      <button onClick={() => navigate("/dashboard")}> 🔙 Dashboard</button>
+            <StatsCard title="Monthly Limit">
+              {editingMode ? (
+                <div className="profile-page__field-group">
+                  <label className="profile-page__label">Monthly Limit</label>
+                  <input
+                    className="profile-page__input"
+                    value={globalMonthlyLimit}
+                    type="number"
+                    onChange={(event) =>
+                      setGlobalMonthlyLimit(event.target.value)
+                    }
+                  />
+                </div>
+              ) : (
+                <>
+                  <Stat title="Spent This Month" value={globalMonthlyLimit} />
+                  <Stat title="Monthly Limit" value={globalMonthlyLimit} />
+                  <Stat title="Month Left" value={globalMonthlyLimit} />
+                </>
+              )}
+            </StatsCard>
+
+            <StatsCard title="Yearly Limit">
+              {editingMode ? (
+                <div className="profile-page__field-group">
+                  <label className="profile-page__label">Yearly Limit</label>
+                  <input
+                    className="profile-page__input"
+                    value={globalYearlyLimit}
+                    type="number"
+                    onChange={(event) =>
+                      setGlobalYearlyLimit(event.target.value)
+                    }
+                  />
+                </div>
+              ) : (
+                <>
+                  <Stat title="Spent This Year" value={globalYearlyLimit} />
+                  <Stat title="Yearly Limit" value={globalYearlyLimit} />
+                  <Stat title="Year Left" value={globalYearlyLimit} />
+                </>
+              )}
+            </StatsCard>
+          </div>
+        </section>
+
+        <section className="profile-page__section">
+          <h2 className="profile-page__section-title">Account Actions</h2>
+          <div className="profile-page__actions">
+            <button
+              className="profile-page__button"
+              onClick={
+                editingMode ? saveUserHandler : () => setEditingMode(true)
+              }
+            >
+              {editingMode ? "Save" : "Edit Profile"}
+            </button>
+            <button
+              className="profile-page__button profile-page__button--secondary"
+              onClick={() => navigate("/dashboard")}
+            >
+              Back to Dashboard
+            </button>
+          </div>
+        </section>
+      </div>
     </AppLayout>
   );
 };

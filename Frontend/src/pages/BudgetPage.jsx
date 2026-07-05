@@ -10,8 +10,11 @@ import Transaction from "../components/Transaction";
 import Modal from "../components/Modal";
 import TransactionForm from "../components/TransactionForm";
 import DeleteConformation from "../components/DeleteConformation";
-import Budget from "../components/Budget";
 import BudgetForm from "../components/BudgetForm";
+import Stat from "../components/Stat";
+import StatsCard from "../components/StatsCard";
+import { iconRegistry } from "../utils/iconRegistry";
+import "./BudgetPage.css";
 
 const BudgetPage = () => {
   const navigate = useNavigate();
@@ -87,15 +90,49 @@ const BudgetPage = () => {
   let BudgetInfo;
   let Transactions;
 
+  const Icon = iconRegistry[budget.icon]?.icon;
+  const budgetTypeLabel =
+    budget.budgetType === "EXPENSE" ? "Expense" : "Income";
+
   BudgetInfo = (
-    <Budget
-      budget={budget}
-      budgetClickHandler={null}
-      editBudgetHandler={() => setShowBudgetForm(true)}
-      deleteBudgetHandler={onDeleteBudgetPressed}
-      showEditAndDelete={true}
-      isBudgetPage={true}
-    />
+    <div className="budget-page__top-area">
+      <button
+        className="budget-page__back-link"
+        onClick={() => navigate("/dashboard")}
+      >
+        ← Back to Dashboard
+      </button>
+
+      <header className="budget-page__header">
+        <div className="budget-page__title-group">
+          <div className="budget-page__title-row">
+            {Icon && (
+              <span className="budget-page__icon" aria-hidden="true">
+                <Icon size={24} />
+              </span>
+            )}
+            <div className="budget-page__title-block">
+              <h2 className="budget-page__title">{budget.name}</h2>
+              <span className="budget-page__badge">{budgetTypeLabel}</span>
+            </div>
+          </div>
+
+          {budget.description && (
+            <p className="budget-page__description">{budget.description}</p>
+          )}
+        </div>
+
+        <div className="budget-page__actions">
+          <button onClick={() => setShowTransactionForm(true)}>
+            ➕ Add Transaction
+          </button>
+          <button onClick={() => setShowBudgetForm(true)}>Edit Budget</button>
+          <button onClick={() => onDeleteBudgetPressed(budget.id)}>
+            Delete Budget
+          </button>
+        </div>
+      </header>
+    </div>
   );
 
   const transactions = budget.transactions;
@@ -121,12 +158,77 @@ const BudgetPage = () => {
 
   return (
     <AppLayout>
-      <button onClick={() => setShowTransactionForm(true)}>
-        ➕ Add Transaction
-      </button>
-      {BudgetInfo}
-      {Transactions}
-      <button onClick={() => navigate("/dashboard")}> Back </button>
+      <div className="budget-page">
+        {BudgetInfo}
+
+        <section className="budget-page__stats">
+          <StatsCard
+            title="Today"
+            progress={
+              budget.dailyLimit
+                ? (budget.daily.amount / budget.daily.limit) * 100
+                : null
+            }
+          >
+            <Stat
+              title={budget.budgetType === "EXPENSE" ? "Spent" : "Earned"}
+              value={budget.daily.amount}
+            />
+
+            {budget.dailyLimit && (
+              <>
+                <Stat title="Limit" value={budget.daily.limit} />
+                <Stat title="Left" value={budget.daily.left} />
+              </>
+            )}
+          </StatsCard>
+
+          <StatsCard
+            title="Week"
+            progress={
+              budget.weeklyLimit
+                ? (budget.weekly.amount / budget.weekly.limit) * 100
+                : null
+            }
+          >
+            <Stat
+              title={budget.budgetType === "EXPENSE" ? "Spent" : "Earned"}
+              value={budget.weekly.amount}
+            />
+
+            {budget.weeklyLimit && (
+              <>
+                <Stat title="Limit" value={budget.weekly.limit} />
+                <Stat title="Left" value={budget.weekly.left} />
+              </>
+            )}
+          </StatsCard>
+
+          <StatsCard
+            title="Month"
+            progress={
+              budget.monthlyLimit
+                ? (budget.monthly.amount / budget.monthly.limit) * 100
+                : null
+            }
+          >
+            <Stat
+              title={budget.budgetType === "EXPENSE" ? "Spent" : "Earned"}
+              value={budget.monthly.amount}
+            />
+
+            {budget.monthlyLimit && (
+              <>
+                <Stat title="Limit" value={budget.monthly.limit} />
+                <Stat title="Left" value={budget.monthly.left} />
+              </>
+            )}
+          </StatsCard>
+        </section>
+
+        <section className="budget-page__transactions">{Transactions}</section>
+      </div>
+
       {showTransactionForm && (
         <Modal>
           <TransactionForm

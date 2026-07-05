@@ -1,5 +1,6 @@
 import Stat from "./Stat";
 import { iconRegistry } from "../utils/iconRegistry";
+import StatsCard from "./StatsCard";
 const Budget = ({
   budget,
   budgetClickHandler,
@@ -27,48 +28,76 @@ const Budget = ({
         </>
       )}
 
-      {isBudgetPage && <h5>Today</h5>}
-      <Stat
-        title={`${budget.budgetType === "EXPENSE" ? "Spent" : "Earned"}${!isBudgetPage ? " Today" : ""}`}
-        value={budget.daily.amount}
-      />
+      <StatsCard
+        title={isBudgetPage ? "Today" : null}
+        progress={
+          budget.dailyLimit
+            ? (budget.daily.amount / budget.daily.limit) * 100
+            : null
+        }
+      >
+        <Stat
+          title={`${budget.budgetType === "EXPENSE" ? "Spent" : "Earned"}${!isBudgetPage ? " Today" : ""}`}
+          value={budget.daily.amount}
+        />
 
-      {budget.dailyLimit && (
-        <>
-          <Stat title="Limit" value={budget.daily.limit} />
-          <Stat title="Left" value={budget.daily.left} />
-        </>
-      )}
+        {budget.dailyLimit && (
+          <>
+            <Stat
+              title={` ${!isBudgetPage ? "Daily" : ""} Limit`}
+              value={budget.daily.limit}
+            />
+            <Stat
+              title={`${!isBudgetPage ? "Today" : ""} Left`}
+              value={budget.daily.left}
+            />
+          </>
+        )}
+      </StatsCard>
 
-      <br />
       {isBudgetPage && (
         <>
-          <h5> Week </h5>
-          <Stat
-            title={budget.budgetType === "EXPENSE" ? "Spent" : "Earned"}
-            value={budget.weekly.amount}
-          />
+          <StatsCard
+            title="Week"
+            progress={
+              budget.weeklyLimit
+                ? (budget.weekly.amount / budget.weekly.limit) * 100
+                : null
+            }
+          >
+            <Stat
+              title={budget.budgetType === "EXPENSE" ? "Spent" : "Earned"}
+              value={budget.weekly.amount}
+            />
 
-          {budget.weeklyLimit && (
-            <>
-              <Stat title="Limit" value={budget.weekly.limit} />
-              <Stat title="Left" value={budget.weekly.left} />
-            </>
-          )}
+            {budget.weeklyLimit && (
+              <>
+                <Stat title="Limit" value={budget.weekly.limit} />
+                <Stat title="Left" value={budget.weekly.left} />
+              </>
+            )}
+          </StatsCard>
 
-          <br />
-          <h5> Month </h5>
-          <Stat
-            title={budget.budgetType === "EXPENSE" ? "Spent" : "Earned"}
-            value={budget.monthly.amount}
-          />
+          <StatsCard
+            title="Month"
+            progress={
+              budget.monthlyLimit
+                ? (budget.monthly.amount / budget.monthly.limit) * 100
+                : null
+            }
+          >
+            <Stat
+              title={budget.budgetType === "EXPENSE" ? "Spent" : "Earned"}
+              value={budget.monthly.amount}
+            />
 
-          {budget.monthlyLimit && (
-            <>
-              <Stat title="Limit" value={budget.monthly.limit} />
-              <Stat title="Left" value={budget.monthly.left} />
-            </>
-          )}
+            {budget.monthlyLimit && (
+              <>
+                <Stat title="Limit" value={budget.monthly.limit} />
+                <Stat title="Left" value={budget.monthly.left} />
+              </>
+            )}
+          </StatsCard>
         </>
       )}
     </div>

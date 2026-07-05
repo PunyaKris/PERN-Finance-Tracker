@@ -1,0 +1,122 @@
+.sidebar {
+  height: 100%;
+  padding: 28px 22px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sidebar__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 4px;
+}
+
+.sidebar__brand-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #e5e7eb;
+  flex-shrink: 0;
+}
+
+.sidebar__brand-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar__brand {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.02em;
+}
+
+.sidebar__tagline {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar__list,
+.sidebar__sublist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar__item {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar__link,
+.sidebar__button {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #374151;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 10px 12px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.sidebar__link:hover,
+.sidebar__button:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.sidebar__button {
+  justify-content: space-between;
+}
+
+.sidebar__sublist {
+  margin-top: 6px;
+  padding-left: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar__sublink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: #4b5563;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.sidebar__sublink:hover {
+  background: #f9fafb;
+  color: #111827;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    padding: 20px;
+  }
+}

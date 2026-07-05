@@ -10,12 +10,14 @@ import {
 
 import Budget from "../components/Budget";
 import Stat from "../components/Stat";
+import StatsCard from "../components/StatsCard";
 import Transaction from "../components/Transaction";
 import Loading from "../components/Loading";
 import Modal from "../components/Modal";
 import TransactionForm from "../components/TransactionForm";
 import DeleteConformation from "../components/DeleteConformation";
 import BudgetForm from "../components/BudgetForm";
+import "./DashboardPage.css";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -86,34 +88,59 @@ const DashboardPage = () => {
   if (stats) {
     Stats = (
       <div>
-        <h3>Today</h3>
-        <Stat title="Spent" value={stats.daily.spent} />
-        <Stat title="Earned" value={stats.daily.earned} />
-        {stats.daily.limit && (
-          <>
-            <Stat title="Limit" value={stats.daily.limit} />
-            <Stat title="Left" value={stats.daily.left} />
-          </>
-        )}
-        <h3>This Month</h3>
-        <Stat title="Spent" value={stats.monthly.spent} />
-        <Stat title="Earned" value={stats.monthly.earned} />
-        {stats.monthly.limit && (
-          <>
-            <Stat title="Limit" value={stats.monthly.limit} />
-            <Stat title="Left" value={stats.monthly.left} />
-          </>
-        )}
-        {/* V1 UI UPDATE */}
-        <h3>This Year</h3>
-        <Stat title="Spent" value={stats.yearly.spent} />
-        <Stat title="Earned" value={stats.yearly.earned} />
-        {stats.yearly.limit && (
-          <>
-            <Stat title="Limit" value={stats.yearly.limit} />
-            <Stat title="Left" value={stats.yearly.left} />
-          </>
-        )}
+        <StatsCard
+          title="Today"
+          progress={
+            stats.daily.limit
+              ? (stats.daily.spent / stats.daily.limit) * 100
+              : null
+          }
+        >
+          <Stat title="Spent" value={stats.daily.spent} />
+          <Stat title="Earned" value={stats.daily.earned} />
+          {stats.daily.limit && (
+            <>
+              <Stat title="Limit" value={stats.daily.limit} />
+              <Stat title="Left" value={stats.daily.left} />
+            </>
+          )}
+        </StatsCard>
+
+        <StatsCard
+          title="This Month"
+          progress={
+            stats.monthly.limit
+              ? (stats.monthly.spent / stats.monthly.limit) * 100
+              : null
+          }
+        >
+          <Stat title="Spent" value={stats.monthly.spent} />
+          <Stat title="Earned" value={stats.monthly.earned} />
+          {stats.monthly.limit && (
+            <>
+              <Stat title="Limit" value={stats.monthly.limit} />
+              <Stat title="Left" value={stats.monthly.left} />
+            </>
+          )}
+        </StatsCard>
+
+        <StatsCard
+          title="This Year"
+          progress={
+            stats.yearly.limit
+              ? (stats.yearly.spent / stats.yearly.limit) * 100
+              : null
+          }
+        >
+          <Stat title="Spent" value={stats.yearly.spent} />
+          <Stat title="Earned" value={stats.yearly.earned} />
+          {stats.yearly.limit && (
+            <>
+              <Stat title="Limit" value={stats.yearly.limit} />
+              <Stat title="Left" value={stats.yearly.left} />
+            </>
+          )}
+        </StatsCard>
       </div>
     );
   } else {
@@ -162,43 +189,55 @@ const DashboardPage = () => {
 
   return (
     <AppLayout>
-      <h1>DashBoard</h1>
-      <button onClick={() => navigate("/profile")}>🙍‍♂️ Profile </button>
-      <button onClick={() => setShowModal(true)} disabled={!budgets}>
-        ➕ Add Transaction
-      </button>
-      <button onClick={() => setShowBudgetForm(true)}> ➕ Add Budget</button>
-      <button onClick={() => navigate("/unconsideredTransaction")}>
-        {" "}
-        Un-Considered Transactions{" "}
-      </button>
-      {Stats}
-      <hr />
-      {Budgets}
-      <hr />
-      {Transactions}
-      {showModal && (
-        <Modal>
-          <TransactionForm
-            budgets={budgets}
-            prevTransaction={prevTransaction}
-            onTransactionSave={transactionSaveHandler}
-          />
-        </Modal>
-      )}
-      {showBudgetForm && (
-        <Modal>
-          <BudgetForm oldBudget={null} onBudgetSave={budgetSaveHandler} />
-        </Modal>
-      )}
-      {showTransactionDeleteConfirm && (
-        <Modal>
-          <DeleteConformation
-            deleteHandler={onConfirmDeleteTransaction}
-            cancelHandler={() => setShowTransactionDeleteConfirm(false)}
-          />
-        </Modal>
-      )}
+      <div className="dashboard-page">
+        <header className="dashboard-page__header">
+          <h1 className="dashboard-page__title">DashBoard</h1>
+
+          <div className="dashboard-page__actions">
+            <button onClick={() => navigate("/profile")}>🙍‍♂️ Profile</button>
+            <button onClick={() => setShowModal(true)} disabled={!budgets}>
+              ➕ Add Transaction
+            </button>
+            <button onClick={() => setShowBudgetForm(true)}>
+              ➕ Add Budget
+            </button>
+            <button onClick={() => navigate("/unconsideredTransaction")}>
+              Un-Considered Transactions
+            </button>
+          </div>
+        </header>
+
+        <section className="dashboard-page__stats">{Stats}</section>
+
+        <section className="dashboard-page__budgets">{Budgets}</section>
+
+        <section className="dashboard-page__transactions">
+          {Transactions}
+        </section>
+
+        {showModal && (
+          <Modal>
+            <TransactionForm
+              budgets={budgets}
+              prevTransaction={prevTransaction}
+              onTransactionSave={transactionSaveHandler}
+            />
+          </Modal>
+        )}
+        {showBudgetForm && (
+          <Modal>
+            <BudgetForm oldBudget={null} onBudgetSave={budgetSaveHandler} />
+          </Modal>
+        )}
+        {showTransactionDeleteConfirm && (
+          <Modal>
+            <DeleteConformation
+              deleteHandler={onConfirmDeleteTransaction}
+              cancelHandler={() => setShowTransactionDeleteConfirm(false)}
+            />
+          </Modal>
+        )}
+      </div>
     </AppLayout>
   );
 };
