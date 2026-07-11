@@ -9,7 +9,7 @@ import {
 export async function createTransactionController(req, res) {
   const userId = req.user.id;
 
-  const { budgetId, title, amount, type, icon } = req.body; // V1 UI UPDATE
+  const { budgetId, title, amount, type, icon, note } = req.body; // V1 UI UPDATE
 
   if (!title || amount === undefined || (type != "EXPENSE" && type != "INCOME"))
     return res.status(400).json({ msg: "Not Valid Data" });
@@ -24,11 +24,18 @@ export async function createTransactionController(req, res) {
         amount,
         type,
         icon, // V1 UI UPDATE
+        note,
       },
       userId,
     );
   } catch (error) {
-    return res.status(404).json({
+    const statusCode =
+      error.message.includes("transactions can only") ||
+      error.message === "Budget not found."
+        ? 400
+        : 404;
+
+    return res.status(statusCode).json({
       msg: error.message,
     });
   }
@@ -85,7 +92,7 @@ export async function getTransactionController(req, res) {
 export async function updateTransactionController(req, res) {
   const userId = req.user.id;
   const { transactionId } = req.params;
-  const { budgetId, title, amount, type, icon } = req.body; // V1 UI UPDATE
+  const { budgetId, title, amount, type, icon, note } = req.body; // V1 UI UPDATE
 
   if (type && type !== "EXPENSE" && type !== "INCOME") {
     return res.status(400).json({ msg: "Not Valid Data" });
@@ -102,11 +109,18 @@ export async function updateTransactionController(req, res) {
         amount,
         type,
         icon, // V1 UI UPDATE
+        note,
       },
       userId,
     );
   } catch (error) {
-    return res.status(404).json({
+    const statusCode =
+      error.message.includes("transactions can only") ||
+      error.message === "Budget not found."
+        ? 400
+        : 404;
+
+    return res.status(statusCode).json({
       msg: error.message,
     });
   }

@@ -60,6 +60,46 @@ function calculateBudgetStats(budget) {
 }
 
 export async function createBudgetService(budgetData) {
+  const PALETTE = [
+    "blue",
+    "green",
+    "purple",
+    "orange",
+    "teal",
+    "pink",
+    "red",
+    "amber",
+    "indigo",
+    "cyan",
+    "lime",
+    "violet",
+    "rose",
+    "sky",
+    "emerald",
+  ];
+
+  // Find used accents for this user's budgets
+  const used = await prisma.budget.findMany({
+    where: {
+      ownerId: budgetData.ownerId,
+      accentColor: { not: null },
+    },
+    select: { accentColor: true },
+  });
+
+  const usedSet = new Set(used.map((u) => u.accentColor));
+
+  // Pick first unused accent
+  let accent = PALETTE.find((c) => !usedSet.has(c));
+
+  if (!accent) {
+    // All used: cycle deterministically based on current budget count
+    const count = await prisma.budget.count({
+      where: { ownerId: budgetData.ownerId },
+    });
+    accent = PALETTE[count % PALETTE.length];
+  }
+
   const createdBudget = await prisma.budget.create({
     data: {
       ownerId: budgetData.ownerId, // temporary until JWT auth exists
@@ -70,6 +110,7 @@ export async function createBudgetService(budgetData) {
       dailyLimit: budgetData.dailyLimit,
       weeklyLimit: budgetData.weeklyLimit,
       monthlyLimit: budgetData.monthlyLimit,
+      accentColor: accent,
     },
   });
 

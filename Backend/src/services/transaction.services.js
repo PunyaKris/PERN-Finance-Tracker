@@ -1,6 +1,86 @@
 import prisma from "../utils/prisma.js";
 
+async function validateBudgetCompatibility(transactionData, userId) {
+  if (!transactionData.budgetId) {
+    return;
+  }
+
+  const budget = await prisma.budget.findFirst({
+    where: {
+      id: transactionData.budgetId,
+      ownerId: userId,
+    },
+    select: {
+      id: true,
+      budgetType: true,
+    },
+  });
+
+  if (!budget) {
+    throw new Error("Budget not found.");
+  }
+
+  const normalizedTransactionType = String(transactionData.type ?? "")
+    .trim()
+    .toUpperCase();
+  const normalizedBudgetType = String(budget.budgetType ?? "")
+    .trim()
+    .toUpperCase();
+
+  if (
+    normalizedTransactionType &&
+    normalizedBudgetType &&
+    normalizedTransactionType !== normalizedBudgetType
+  ) {
+    throw new Error(
+      normalizedTransactionType === "EXPENSE"
+        ? "Expense transactions can only be added to Expense budgets."
+        : "Income transactions can only be added to Income budgets.",
+    );
+  }
+}
+
 export async function createTransaction(transactionData, userId) {
+  await validateBudgetCompatibility(transactionData, userId);
+
+  const PALETTE = [
+    "blue",
+    "green",
+    "purple",
+    "orange",
+    "teal",
+    "pink",
+    "red",
+    "amber",
+    "indigo",
+    "cyan",
+    "lime",
+    "violet",
+    "rose",
+    "sky",
+    "emerald",
+  ];
+
+  // Independent transaction accent pool: find used accents for this user's transactions
+  const used = await prisma.transaction.findMany({
+    where: {
+      ownerId: userId,
+      accentColor: { not: null },
+    },
+    select: { accentColor: true },
+  });
+
+  const usedSet = new Set(used.map((u) => u.accentColor));
+  let accent = PALETTE.find((c) => !usedSet.has(c));
+
+  if (!accent) {
+    // All used: cycle deterministically based on current transaction count
+    const count = await prisma.transaction.count({
+      where: { ownerId: userId },
+    });
+    accent = PALETTE[count % PALETTE.length];
+  }
+
   const createdTransction = await prisma.transaction.create({
     data: {
       ownerId: userId,
@@ -9,6 +89,8 @@ export async function createTransaction(transactionData, userId) {
       amount: transactionData.amount,
       type: transactionData.type,
       icon: transactionData.icon, // V1 UI UPDATE
+      note: transactionData.note,
+      accentColor: accent,
     },
   });
 
@@ -97,6 +179,8 @@ export async function getTransaction(id, userId) {
 }
 
 export async function updateTransaction(id, transactionData, userId) {
+  await validateBudgetCompatibility(transactionData, userId);
+
   const transaction = await prisma.transaction.findFirst({
     where: {
       id,
@@ -118,6 +202,7 @@ export async function updateTransaction(id, transactionData, userId) {
       amount: transactionData.amount,
       type: transactionData.type,
       icon: transactionData.icon, // V1 UI UPDATE
+      note: transactionData.note,
     },
   });
 

@@ -39,6 +39,7 @@ model Budget {
   name String
   description String?
   icon String?
+  accentColor String?
   budgetType BudgetType
   dailyLimit   Decimal?
   weeklyLimit  Decimal?
@@ -57,6 +58,7 @@ model Transaction {
   budget   Budget? @relation(fields: [budgetId], references: [id], onDelete: SetNull)
   title String
   amount Decimal
+  accentColor String?
   type TransactionType
   transactionDate DateTime @default(now())
   note String?

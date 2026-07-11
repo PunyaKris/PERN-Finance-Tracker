@@ -149,6 +149,10 @@ const dashboardService = async (userId) => {
 
   return {
     budgetCount,
+    username: user.username,
+    user: {
+      username: user.username,
+    },
 
     daily: {
       earned: totalDailyIncome,

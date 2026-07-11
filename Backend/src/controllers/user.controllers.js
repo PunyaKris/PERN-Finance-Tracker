@@ -3,6 +3,28 @@ import {
   updateUserService,
 } from "../services/user.services.js";
 
+export function normalizeLimitValue(value) {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  if (
+    value === null ||
+    value === "" ||
+    (typeof value === "string" && value.trim() === "")
+  ) {
+    return null;
+  }
+
+  const parsedValue = Number(value);
+
+  if (!Number.isInteger(parsedValue) || parsedValue < 0) {
+    return { invalid: true };
+  }
+
+  return parsedValue;
+}
+
 export async function getUserController(req, res) {
   const userId = req.user.id;
 
@@ -22,30 +44,25 @@ export async function updateUserController(req, res) {
   const { username, globalDailyLimit, globalMonthlyLimit, globalYearlyLimit } =
     req.body;
 
-  if (
-    globalDailyLimit !== undefined &&
-    (!Number.isInteger(globalDailyLimit) || globalDailyLimit <= 0)
-  ) {
+  const normalizedDailyLimit = normalizeLimitValue(globalDailyLimit);
+  const normalizedMonthlyLimit = normalizeLimitValue(globalMonthlyLimit);
+  const normalizedYearlyLimit = normalizeLimitValue(globalYearlyLimit);
+
+  if (normalizedDailyLimit?.invalid) {
     return res.status(400).json({
-      msg: "globalDailyLimit must be a positive integer",
+      msg: "globalDailyLimit must be a non-negative integer",
     });
   }
 
-  if (
-    globalMonthlyLimit !== undefined &&
-    (!Number.isInteger(globalMonthlyLimit) || globalMonthlyLimit <= 0)
-  ) {
+  if (normalizedMonthlyLimit?.invalid) {
     return res.status(400).json({
-      msg: "globalMonthlyLimit must be a positive integer",
+      msg: "globalMonthlyLimit must be a non-negative integer",
     });
   }
 
-  if (
-    globalYearlyLimit !== undefined &&
-    (!Number.isInteger(globalYearlyLimit) || globalYearlyLimit <= 0)
-  ) {
+  if (normalizedYearlyLimit?.invalid) {
     return res.status(400).json({
-      msg: "globalYearlyLimit must be a positive integer",
+      msg: "globalYearlyLimit must be a non-negative integer",
     });
   }
 
@@ -55,9 +72,9 @@ export async function updateUserController(req, res) {
     updatedUser = await updateUserService(
       userId,
       username,
-      globalDailyLimit,
-      globalMonthlyLimit,
-      globalYearlyLimit,
+      normalizedDailyLimit,
+      normalizedMonthlyLimit,
+      normalizedYearlyLimit,
     );
   } catch (error) {
     return res.status(404).json({ msg: error.message });
