@@ -1,4 +1,6 @@
+import { formatCurrency, formatDateTime } from "../utils/formatters";
 import { iconRegistry } from "../utils/iconRegistry";
+import { getAccentStyleVars } from "../utils/accentRegistry";
 import "./Transaction.css";
 
 const Transaction = ({
@@ -8,6 +10,7 @@ const Transaction = ({
   onDeleteTransactionPressed,
 }) => {
   const Icon = iconRegistry[transaction.icon]?.icon;
+  const accentStyle = getAccentStyleVars(transaction?.accentColor);
   const amountClassName =
     transaction.type == "EXPENSE"
       ? "transaction__amount transaction__amount--expense"
@@ -16,7 +19,16 @@ const Transaction = ({
   return (
     <div className="transaction">
       <div className="transaction__main">
-        <div className="transaction__icon" aria-hidden="true">
+        <div
+          className="transaction__icon"
+          aria-hidden="true"
+          style={{
+            ...accentStyle,
+            background: accentStyle["--accent-icon-bg"],
+            color: accentStyle["--accent-icon-color"],
+            borderColor: accentStyle["--accent-hover-border"],
+          }}
+        >
           {Icon ? (
             <Icon size={18} />
           ) : (
@@ -43,16 +55,17 @@ const Transaction = ({
               <span className="transaction__note">{transaction.note}</span>
             )}
             <span className="transaction__date">
-              {transaction.transactionDate}
+              {formatDateTime(transaction.transactionDate)}
             </span>
           </div>
         </div>
       </div>
+
       <div className={amountClassName}>
         <span className="transaction__amount-sign">
           {transaction.type == "EXPENSE" ? "-" : "+"}
         </span>
-        <span>{transaction.amount}</span>
+        <span>{formatCurrency(transaction.amount)}</span>
       </div>
 
       <div className="transaction__actions">

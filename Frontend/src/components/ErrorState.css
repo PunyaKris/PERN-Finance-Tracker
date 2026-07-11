@@ -1,0 +1,87 @@
+.error-state {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px;
+  border: 1px solid color-mix(in srgb, var(--destructive) 35%, var(--border));
+  border-radius: 16px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--destructive) 12%, var(--card)) 0%,
+    color-mix(in srgb, var(--destructive) 8%, var(--surface-muted)) 100%
+  );
+  color: var(--destructive);
+  text-align: left;
+}
+
+.error-state--centered {
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  text-align: center;
+}
+
+.error-state--compact {
+  padding: 16px 18px;
+  min-height: auto;
+}
+
+.error-state__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--destructive) 18%, var(--card));
+  font-size: 1.3rem;
+}
+
+.error-state__content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.error-state__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--destructive);
+}
+
+.error-state__description {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--destructive);
+}
+
+.error-state__action {
+  min-height: 40px;
+  align-self: flex-start;
+  padding: 9px 14px;
+  border: 1px solid color-mix(in srgb, var(--destructive) 30%, var(--border));
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--destructive);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.error-state__action:hover {
+  border-color: #f87171;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.08);
+  transform: translateY(-1px);
+}
+
+.error-state__action:active {
+  transform: translateY(0);
+}
+
+.error-state--centered .error-state__action {
+  align-self: center;
+}

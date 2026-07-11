@@ -1,29 +1,43 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Settings } from "lucide-react";
 import { getUserServices, editUserService } from "../services/userServices";
 import AppLayout from "../components/AppLayout";
-import StatsCard from "../components/StatsCard";
-import Stat from "../components/Stat";
+import Loading from "../components/Loading";
+import ErrorState from "../components/ErrorState";
 import "./ProfilePage.css";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState(""); // V1 UI UPDATE
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [globalDailyLimit, setGlobalDailyLimit] = useState(0);
   const [globalMonthlyLimit, setGlobalMonthlyLimit] = useState(0);
-  const [globalYearlyLimit, setGlobalYearlyLimit] = useState(0); // V1 UI UPDATE
+  const [globalYearlyLimit, setGlobalYearlyLimit] = useState(0);
   const [editingMode, setEditingMode] = useState(false);
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [profileError, setProfileError] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+  const [editSnapshot, setEditSnapshot] = useState(null);
 
   async function getUser() {
-    const response = await getUserServices();
-    const user = response.data;
-    setEmail(user.email);
-    setUsername(user.username); // V1 UI UPDATE
-    if (user.globalDailyLimit) setGlobalDailyLimit(user.globalDailyLimit);
-    if (user.globalMonthlyLimit) setGlobalMonthlyLimit(user.globalMonthlyLimit);
-    if (user.globalYearlyLimit) setGlobalYearlyLimit(user.globalYearlyLimit); // V1 UI UPDATE
+    setProfileError(false);
+    setProfileLoading(true);
+
+    try {
+      const response = await getUserServices();
+      const user = response.data;
+      setEmail(user.email || "");
+      setUsername(user.username || "");
+      setGlobalDailyLimit(user.globalDailyLimit ?? 0);
+      setGlobalMonthlyLimit(user.globalMonthlyLimit ?? 0);
+      setGlobalYearlyLimit(user.globalYearlyLimit ?? 0);
+    } catch (error) {
+      setProfileError(true);
+    } finally {
+      setProfileLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -31,148 +45,302 @@ const ProfilePage = () => {
     getUserCaller();
   }, []);
 
-  async function saveUserHandler() {
-    const response = await editUserService(
+  function handleEnterEditMode() {
+    setEditSnapshot({
       username,
-      Number(globalDailyLimit),
-      Number(globalMonthlyLimit),
-      Number(globalYearlyLimit),
-    );
-    const editedUser = response.data;
-    console.log(editedUser);
+      globalDailyLimit,
+      globalMonthlyLimit,
+      globalYearlyLimit,
+    });
+    setEditingMode(true);
+    setSaveError(false);
+  }
+
+  function handleCancelEdit() {
+    if (editSnapshot) {
+      setUsername(editSnapshot.username || "");
+      setGlobalDailyLimit(editSnapshot.globalDailyLimit ?? 0);
+      setGlobalMonthlyLimit(editSnapshot.globalMonthlyLimit ?? 0);
+      setGlobalYearlyLimit(editSnapshot.globalYearlyLimit ?? 0);
+    }
     setEditingMode(false);
-    await getUser();
+    setSaveError(false);
+  }
+
+  function serializeLimitValue(value) {
+    if (value === null || value === undefined || value === "") {
+      return null;
+    }
+
+    const numericValue = Number(value);
+
+    if (Number.isNaN(numericValue)) {
+      return null;
+    }
+
+    return numericValue < 0 ? null : numericValue;
+  }
+
+  async function saveUserHandler() {
+    setSaveError(false);
+
+    try {
+      await editUserService(
+        username,
+        serializeLimitValue(globalDailyLimit),
+        serializeLimitValue(globalMonthlyLimit),
+        serializeLimitValue(globalYearlyLimit),
+      );
+      setEditingMode(false);
+      await getUser();
+    } catch (error) {
+      setSaveError(true);
+    }
+  }
+
+  function formatLimitValue(value) {
+    const numericValue = Number(value);
+
+    if (
+      value === null ||
+      value === undefined ||
+      value === "" ||
+      Number.isNaN(numericValue) ||
+      numericValue <= 0
+    ) {
+      return "Not set";
+    }
+
+    return `₹${numericValue.toLocaleString("en-IN")}`;
+  }
+
+  const profileInitial = (username || email || "U").charAt(0).toUpperCase();
+
+  if (profileLoading && !profileError) {
+    return (
+      <AppLayout>
+        <div className="profile-page">
+          <Loading />
+        </div>
+      </AppLayout>
+    );
+  }
+
+  if (profileError) {
+    return (
+      <AppLayout>
+        <div className="profile-page">
+          <ErrorState
+            title="Couldn't load profile."
+            description="We couldn't fetch your profile details right now."
+            actionLabel="Retry"
+            onAction={() => getUser()}
+            centered
+          />
+        </div>
+      </AppLayout>
+    );
   }
 
   return (
     <AppLayout>
       <div className="profile-page">
-        <header className="profile-page__header">
-          <div className="profile-page__title-group">
-            <h1 className="profile-page__title">Profile</h1>
-            <p className="profile-page__subtitle">
-              Manage your personal information and global spending limits.
-            </p>
-          </div>
-        </header>
+        <div className="profile-page__top-area">
+          <button
+            className="profile-page__back-link"
+            onClick={() => navigate("/dashboard")}
+          >
+            ← Back to Dashboard
+          </button>
+
+          <header className="profile-page__header">
+            <div className="profile-page__title-group">
+              <h1 className="profile-page__title">Profile</h1>
+              <p className="profile-page__subtitle">
+                Manage your profile and spending limits.
+              </p>
+            </div>
+
+            <div className="profile-page__actions">
+              {editingMode ? (
+                <>
+                  <button
+                    type="button"
+                    className="profile-page__button profile-page__button--secondary"
+                    onClick={handleCancelEdit}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="profile-page__button"
+                    onClick={saveUserHandler}
+                  >
+                    Save Changes
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  className="profile-page__icon-button"
+                  onClick={handleEnterEditMode}
+                  aria-label="Edit profile"
+                >
+                  <Settings
+                    className="profile-page__settings-icon"
+                    size={18}
+                    strokeWidth={2.2}
+                  />
+                </button>
+              )}
+            </div>
+          </header>
+        </div>
 
         <section className="profile-page__section">
-          <h2 className="profile-page__section-title">Profile Information</h2>
-          <div className="profile-page__card">
-            {editingMode ? (
-              <div className="profile-page__field-group">
-                <label className="profile-page__label">Username</label>
-                <input
-                  className="profile-page__input"
-                  value={username}
-                  type="text"
-                  onChange={(event) => setUsername(event.target.value)}
-                />
-              </div>
-            ) : (
-              <div className="profile-page__info-row">
-                <span className="profile-page__info-label">Name</span>
-                <span className="profile-page__info-value">{username}</span>
-              </div>
-            )}
+          <div className="profile-page__card profile-page__card--profile">
+            <div className="profile-page__avatar" aria-hidden="true">
+              {profileInitial}
+            </div>
 
-            <div className="profile-page__info-row">
-              <span className="profile-page__info-label">Email</span>
-              <span className="profile-page__info-value">{email}</span>
+            <div className="profile-page__profile-meta">
+              <h2 className="profile-page__profile-name">
+                {username || "Member"}
+              </h2>
+              <p className="profile-page__profile-subtitle">
+                Manage your profile and spending limits
+              </p>
+
+              <div className="profile-page__profile-info">
+                <div className="profile-page__profile-info-row">
+                  <span className="profile-page__profile-info-label">Name</span>
+                  {editingMode ? (
+                    <input
+                      className="profile-page__input"
+                      value={username}
+                      type="text"
+                      onChange={(event) => setUsername(event.target.value)}
+                    />
+                  ) : (
+                    <span className="profile-page__profile-info-value">
+                      {username || "Not set"}
+                    </span>
+                  )}
+                </div>
+
+                <div className="profile-page__profile-info-row">
+                  <span className="profile-page__profile-info-label">
+                    Email
+                  </span>
+                  <span className="profile-page__profile-info-value">
+                    {email || "Not set"}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         <section className="profile-page__section">
-          <h2 className="profile-page__section-title">Global Budget Limits</h2>
-          <div className="profile-page__stats-grid">
-            <StatsCard title="Daily Limit">
-              {editingMode ? (
-                <div className="profile-page__field-group">
-                  <label className="profile-page__label">Daily Limit</label>
+          <div className="profile-page__section-heading">
+            <h2 className="profile-page__section-title">Global Limits</h2>
+            <p className="profile-page__section-subtitle">
+              Set your overall spending limits
+            </p>
+          </div>
+
+          <div className="profile-page__limits-list">
+            <div className="profile-page__limit-card">
+              <span className="profile-page__limit-icon">☀</span>
+              <div className="profile-page__limit-copy">
+                <h3 className="profile-page__limit-title">Daily Limit</h3>
+                <p className="profile-page__limit-subtitle">
+                  Maximum you can spend per day
+                </p>
+              </div>
+              <div className="profile-page__limit-value">
+                {editingMode ? (
                   <input
                     className="profile-page__input"
-                    value={globalDailyLimit}
+                    value={globalDailyLimit ?? 0}
                     type="number"
+                    min="0"
+                    inputMode="numeric"
                     onChange={(event) =>
                       setGlobalDailyLimit(event.target.value)
                     }
                   />
-                </div>
-              ) : (
-                <>
-                  <Stat title="Spent Today" value={globalDailyLimit} />
-                  <Stat title="Daily Limit" value={globalDailyLimit} />
-                  <Stat title="Today Left" value={globalDailyLimit} />
-                </>
-              )}
-            </StatsCard>
+                ) : (
+                  <span>{formatLimitValue(globalDailyLimit)}</span>
+                )}
+              </div>
+            </div>
 
-            <StatsCard title="Monthly Limit">
-              {editingMode ? (
-                <div className="profile-page__field-group">
-                  <label className="profile-page__label">Monthly Limit</label>
+            <div className="profile-page__limit-card">
+              <span className="profile-page__limit-icon profile-page__limit-icon--monthly">
+                ◷
+              </span>
+              <div className="profile-page__limit-copy">
+                <h3 className="profile-page__limit-title">Monthly Limit</h3>
+                <p className="profile-page__limit-subtitle">
+                  Maximum you can spend per month
+                </p>
+              </div>
+              <div className="profile-page__limit-value">
+                {editingMode ? (
                   <input
                     className="profile-page__input"
-                    value={globalMonthlyLimit}
+                    value={globalMonthlyLimit ?? 0}
                     type="number"
+                    min="0"
+                    inputMode="numeric"
                     onChange={(event) =>
                       setGlobalMonthlyLimit(event.target.value)
                     }
                   />
-                </div>
-              ) : (
-                <>
-                  <Stat title="Spent This Month" value={globalMonthlyLimit} />
-                  <Stat title="Monthly Limit" value={globalMonthlyLimit} />
-                  <Stat title="Month Left" value={globalMonthlyLimit} />
-                </>
-              )}
-            </StatsCard>
+                ) : (
+                  <span>{formatLimitValue(globalMonthlyLimit)}</span>
+                )}
+              </div>
+            </div>
 
-            <StatsCard title="Yearly Limit">
-              {editingMode ? (
-                <div className="profile-page__field-group">
-                  <label className="profile-page__label">Yearly Limit</label>
+            <div className="profile-page__limit-card">
+              <span className="profile-page__limit-icon profile-page__limit-icon--yearly">
+                ◆
+              </span>
+              <div className="profile-page__limit-copy">
+                <h3 className="profile-page__limit-title">Yearly Limit</h3>
+                <p className="profile-page__limit-subtitle">
+                  Maximum you can spend per year
+                </p>
+              </div>
+              <div className="profile-page__limit-value">
+                {editingMode ? (
                   <input
                     className="profile-page__input"
-                    value={globalYearlyLimit}
+                    value={globalYearlyLimit ?? 0}
                     type="number"
+                    min="0"
+                    inputMode="numeric"
                     onChange={(event) =>
                       setGlobalYearlyLimit(event.target.value)
                     }
                   />
-                </div>
-              ) : (
-                <>
-                  <Stat title="Spent This Year" value={globalYearlyLimit} />
-                  <Stat title="Yearly Limit" value={globalYearlyLimit} />
-                  <Stat title="Year Left" value={globalYearlyLimit} />
-                </>
-              )}
-            </StatsCard>
+                ) : (
+                  <span>{formatLimitValue(globalYearlyLimit)}</span>
+                )}
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className="profile-page__section">
-          <h2 className="profile-page__section-title">Account Actions</h2>
-          <div className="profile-page__actions">
-            <button
-              className="profile-page__button"
-              onClick={
-                editingMode ? saveUserHandler : () => setEditingMode(true)
-              }
-            >
-              {editingMode ? "Save" : "Edit Profile"}
-            </button>
-            <button
-              className="profile-page__button profile-page__button--secondary"
-              onClick={() => navigate("/dashboard")}
-            >
-              Back to Dashboard
-            </button>
-          </div>
-        </section>
+        {saveError && (
+          <ErrorState
+            title="Something went wrong."
+            description="We couldn't save your profile changes right now."
+            compact
+          />
+        )}
       </div>
     </AppLayout>
   );

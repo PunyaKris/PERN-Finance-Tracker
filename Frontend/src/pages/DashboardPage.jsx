@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { CalendarDays } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../components/AppLayout";
 import getUserStats from "../services/dashboardStatService";
@@ -8,11 +9,14 @@ import {
   deleteTransaction,
 } from "../services/transactionService";
 
-import Budget from "../components/Budget";
+import DashboardBudgetList from "../components/DashboardBudgetList";
 import Stat from "../components/Stat";
 import StatsCard from "../components/StatsCard";
-import Transaction from "../components/Transaction";
+import { getSafeProgress } from "../utils/formatters";
+import RecentTransaction from "../components/RecentTransaction";
 import Loading from "../components/Loading";
+import EmptyState from "../components/EmptyState";
+import ErrorState from "../components/ErrorState";
 import Modal from "../components/Modal";
 import TransactionForm from "../components/TransactionForm";
 import DeleteConformation from "../components/DeleteConformation";
@@ -23,8 +27,11 @@ const DashboardPage = () => {
   const navigate = useNavigate();
 
   const [stats, setStats] = useState(null);
+  const [statsError, setStatsError] = useState(false);
   const [budgets, setBudgets] = useState(null);
+  const [budgetsError, setBudgetsError] = useState(false);
   const [transactions, setTransactions] = useState(null);
+  const [transactionsError, setTransactionsError] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [prevTransaction, setPrevTransaction] = useState(null);
   const [showTransactionDeleteConfirm, setShowTransactionDeleteConfirm] =
@@ -32,25 +39,41 @@ const DashboardPage = () => {
   const [idToDelete, setIdToDelete] = useState();
   const [showBudgetForm, setShowBudgetForm] = useState(false);
 
-  function handleEditTransactionPress(transaction) {
-    setShowModal(true);
-    setPrevTransaction({
-      id: transaction.id,
-      title: transaction.title,
-      type: transaction.type,
-      amount: transaction.amount,
-      budgetId: transaction.budgetId,
-    });
-  }
-
   async function fetchDashboard() {
-    const statResponse = await getUserStats();
-    const budgetResponse = await getAllBudgetService();
-    const transactionResponse = await getRecentTransactionService();
+    setStatsError(false);
+    setBudgetsError(false);
+    setTransactionsError(false);
+    setStats(null);
+    setBudgets(null);
+    setTransactions(null);
 
-    setStats(statResponse.data);
-    setBudgets(budgetResponse.data);
-    setTransactions(transactionResponse.data);
+    const [statsResult, budgetsResult, transactionsResult] =
+      await Promise.allSettled([
+        getUserStats(),
+        getAllBudgetService(),
+        getRecentTransactionService(),
+      ]);
+
+    if (statsResult.status === "fulfilled") {
+      setStats(statsResult.value.data);
+    } else {
+      setStats(null);
+      setStatsError(true);
+    }
+
+    if (budgetsResult.status === "fulfilled") {
+      setBudgets(budgetsResult.value.data);
+    } else {
+      setBudgets(null);
+      setBudgetsError(true);
+    }
+
+    if (transactionsResult.status === "fulfilled") {
+      setTransactions(transactionsResult.value.data);
+    } else {
+      setTransactions(null);
+      setTransactionsError(true);
+    }
   }
 
   useEffect(() => {
@@ -69,11 +92,6 @@ const DashboardPage = () => {
     await fetchDashboard();
   }
 
-  function onDeleteTransactionPressed(transactionId) {
-    setShowTransactionDeleteConfirm(true);
-    setIdToDelete(transactionId);
-  }
-
   async function onConfirmDeleteTransaction() {
     await deleteTransaction(idToDelete);
     setShowTransactionDeleteConfirm(false);
@@ -82,141 +100,163 @@ const DashboardPage = () => {
   }
 
   let Stats;
-  let Budgets;
   let Transactions;
 
-  if (stats) {
+  if (stats === null && !statsError) {
+    Stats = <Loading />;
+  } else if (statsError) {
+    Stats = (
+      <ErrorState
+        title="Couldn't load dashboard."
+        description="We couldn't fetch your dashboard summary right now."
+        actionLabel="Retry"
+        onAction={() => fetchDashboard()}
+      />
+    );
+  } else {
     Stats = (
       <div>
         <StatsCard
+          variant="dashboard"
           title="Today"
-          progress={
-            stats.daily.limit
-              ? (stats.daily.spent / stats.daily.limit) * 100
-              : null
-          }
+          progress={getSafeProgress(stats.daily.spent, stats.daily.limit)}
+          headerIcon={<CalendarDays size={18} />}
         >
-          <Stat title="Spent" value={stats.daily.spent} />
           <Stat title="Earned" value={stats.daily.earned} />
-          {stats.daily.limit && (
-            <>
-              <Stat title="Limit" value={stats.daily.limit} />
-              <Stat title="Left" value={stats.daily.left} />
-            </>
-          )}
+          <Stat title="Spent" value={stats.daily.spent} />
+          <Stat title="Limit" value={stats.daily.limit ?? null} />
+          <Stat title="Left" value={stats.daily.left ?? null} />
         </StatsCard>
 
         <StatsCard
+          variant="dashboard"
           title="This Month"
-          progress={
-            stats.monthly.limit
-              ? (stats.monthly.spent / stats.monthly.limit) * 100
-              : null
-          }
+          progress={getSafeProgress(stats.monthly.spent, stats.monthly.limit)}
+          headerIcon={<CalendarDays size={18} />}
         >
-          <Stat title="Spent" value={stats.monthly.spent} />
           <Stat title="Earned" value={stats.monthly.earned} />
-          {stats.monthly.limit && (
-            <>
-              <Stat title="Limit" value={stats.monthly.limit} />
-              <Stat title="Left" value={stats.monthly.left} />
-            </>
-          )}
+          <Stat title="Spent" value={stats.monthly.spent} />
+          <Stat title="Limit" value={stats.monthly.limit ?? null} />
+          <Stat title="Left" value={stats.monthly.left ?? null} />
         </StatsCard>
 
         <StatsCard
+          variant="dashboard"
           title="This Year"
-          progress={
-            stats.yearly.limit
-              ? (stats.yearly.spent / stats.yearly.limit) * 100
-              : null
-          }
+          progress={getSafeProgress(stats.yearly.spent, stats.yearly.limit)}
+          headerIcon={<CalendarDays size={18} />}
         >
-          <Stat title="Spent" value={stats.yearly.spent} />
           <Stat title="Earned" value={stats.yearly.earned} />
-          {stats.yearly.limit && (
-            <>
-              <Stat title="Limit" value={stats.yearly.limit} />
-              <Stat title="Left" value={stats.yearly.left} />
-            </>
-          )}
+          <Stat title="Spent" value={stats.yearly.spent} />
+          <Stat title="Limit" value={stats.yearly.limit ?? null} />
+          <Stat title="Left" value={stats.yearly.left ?? null} />
         </StatsCard>
       </div>
     );
-  } else {
-    Stats = <Loading />;
   }
 
-  if (budgets) {
-    Budgets = (
-      <div>
-        <h3>Budgets</h3>
-        {budgets.map((budget) => (
-          <Budget
-            key={budget.id}
-            budget={budget}
-            showEditAndDelete={false}
-            budgetClickHandler={() => navigate(`/budget/${budget.id}`)}
-            editButtonHandler={null}
-            deleteButtonHandler={null}
-            isBudgetPage={false}
-          />
-        ))}
-      </div>
-    );
-  } else {
-    Budgets = <Loading />;
-  }
-
-  if (transactions) {
-    Transactions = (
-      <div>
-        <h3> Recent Transaction </h3>
-        {transactions.map((transaction) => (
-          <Transaction
-            key={transaction.id}
-            transaction={transaction}
-            showBudget={true}
-            onEditTransactionPressed={handleEditTransactionPress}
-            onDeleteTransactionPressed={onDeleteTransactionPressed}
-          />
-        ))}
-      </div>
-    );
-  } else {
+  if (transactions === null && !transactionsError) {
     Transactions = <Loading />;
+  } else if (transactionsError) {
+    Transactions = (
+      <ErrorState
+        title="Couldn't load transactions."
+        description="We couldn't fetch your recent transactions right now."
+        actionLabel="Retry"
+        onAction={() => fetchDashboard()}
+        compact
+      />
+    );
+  } else if (transactions.length === 0) {
+    Transactions = (
+      <EmptyState
+        icon="🧾"
+        title="No recent transactions"
+        description="Your latest activity will appear here as soon as you add transactions."
+        compact
+      />
+    );
+  } else {
+    Transactions = (
+      <div className="dashboard-page__list dashboard-page__list--stacked">
+        {transactions.map((transaction) => (
+          <RecentTransaction key={transaction.id} transaction={transaction} />
+        ))}
+      </div>
+    );
   }
+
+  const username =
+    stats?.user?.username ??
+    stats?.user?.name ??
+    stats?.username ??
+    stats?.userName ??
+    stats?.name ??
+    "";
+  const currentHour = new Date().getHours();
+  const greetingPrefix =
+    currentHour >= 5 && currentHour < 12
+      ? "Good Morning"
+      : currentHour >= 12 && currentHour < 17
+        ? "Good Afternoon"
+        : "Good Evening";
+  const greeting = username
+    ? `${greetingPrefix}, ${username} 👋`
+    : `${greetingPrefix} 👋`;
 
   return (
     <AppLayout>
       <div className="dashboard-page">
         <header className="dashboard-page__header">
-          <h1 className="dashboard-page__title">DashBoard</h1>
+          <div className="dashboard-page__heading">
+            <h1 className="dashboard-page__title">{greeting}</h1>
+            <p className="dashboard-page__subtitle">
+              Here's your financial overview.
+            </p>
+          </div>
 
           <div className="dashboard-page__actions">
-            <button onClick={() => navigate("/profile")}>🙍‍♂️ Profile</button>
             <button onClick={() => setShowModal(true)} disabled={!budgets}>
               ➕ Add Transaction
             </button>
             <button onClick={() => setShowBudgetForm(true)}>
               ➕ Add Budget
             </button>
-            <button onClick={() => navigate("/unconsideredTransaction")}>
-              Un-Considered Transactions
-            </button>
           </div>
         </header>
 
         <section className="dashboard-page__stats">{Stats}</section>
 
-        <section className="dashboard-page__budgets">{Budgets}</section>
+        <div className="dashboard-page__content">
+          <DashboardBudgetList
+            budgets={budgets ?? []}
+            loading={budgets === null && !budgetsError}
+            error={budgetsError}
+            onRetry={() => fetchDashboard()}
+            onCreateBudget={() => setShowBudgetForm(true)}
+            onBudgetClick={(budget) => navigate(`/budget/${budget.id}`)}
+          />
 
-        <section className="dashboard-page__transactions">
-          {Transactions}
-        </section>
+          <aside className="dashboard-page__transactions">
+            <div className="dashboard-page__section-heading">
+              <h2 className="dashboard-page__section-title">
+                Recent Transactions
+              </h2>
+              <p className="dashboard-page__section-copy">
+                Your latest activity at a glance
+              </p>
+            </div>
+            {Transactions}
+          </aside>
+        </div>
 
         {showModal && (
-          <Modal>
+          <Modal
+            onClose={() => {
+              setShowModal(false);
+              setPrevTransaction(null);
+            }}
+          >
             <TransactionForm
               budgets={budgets}
               prevTransaction={prevTransaction}
@@ -225,12 +265,12 @@ const DashboardPage = () => {
           </Modal>
         )}
         {showBudgetForm && (
-          <Modal>
+          <Modal onClose={() => setShowBudgetForm(false)}>
             <BudgetForm oldBudget={null} onBudgetSave={budgetSaveHandler} />
           </Modal>
         )}
         {showTransactionDeleteConfirm && (
-          <Modal>
+          <Modal onClose={() => setShowTransactionDeleteConfirm(false)}>
             <DeleteConformation
               deleteHandler={onConfirmDeleteTransaction}
               cancelHandler={() => setShowTransactionDeleteConfirm(false)}

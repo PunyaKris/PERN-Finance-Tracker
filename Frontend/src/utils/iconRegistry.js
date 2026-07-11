@@ -1,137 +1,148 @@
+import { createElement } from "react";
 import {
+  Airplane,
+  ArrowsClockwise,
+  Barbell,
   Car,
-  CircleHelp,
-  Dumbbell,
-  Film,
-  Fuel,
-  Gamepad2,
+  DotsThreeCircle,
+  FilmSlate,
+  ForkKnife,
+  GameController,
+  GasPump,
   Gift,
   GraduationCap,
-  HeartPulse,
+  Heartbeat,
   House,
-  KeyRound,
+  Key,
   PawPrint,
   PiggyBank,
-  Plane,
   Receipt,
-  Repeat,
   ShoppingBag,
-  TrendingUp,
-  UtensilsCrossed,
+  TrendUp,
   Wallet,
-} from "lucide-react";
+} from "@phosphor-icons/react";
+
+const withFill = (IconComponent) => {
+  const FilledIcon = (props) =>
+    createElement(IconComponent, {
+      weight: "fill",
+      ...props,
+    });
+
+  return FilledIcon;
+};
 
 export const iconRegistry = {
   // Daily Life
 
   food: {
     label: "Food",
-    icon: UtensilsCrossed,
+    icon: withFill(ForkKnife),
   },
 
   shopping: {
     label: "Shopping",
-    icon: ShoppingBag,
+    icon: withFill(ShoppingBag),
   },
 
   transport: {
     label: "Transport",
-    icon: Car,
+    icon: withFill(Car),
   },
 
   fuel: {
     label: "Fuel",
-    icon: Fuel,
+    icon: withFill(GasPump),
   },
 
   // Money
 
   salary: {
     label: "Salary",
-    icon: Wallet,
+    icon: withFill(Wallet),
   },
 
   investment: {
     label: "Investment",
-    icon: TrendingUp,
+    icon: withFill(TrendUp),
   },
 
   savings: {
     label: "Savings",
-    icon: PiggyBank,
+    icon: withFill(PiggyBank),
   },
 
   bills: {
     label: "Bills",
-    icon: Receipt,
+    icon: withFill(Receipt),
   },
 
   // Home
 
   home: {
     label: "Home",
-    icon: House,
+    icon: withFill(House),
   },
 
   rent: {
     label: "Rent",
-    icon: KeyRound,
+    icon: withFill(Key),
   },
 
   pets: {
     label: "Pets",
-    icon: PawPrint,
+    icon: withFill(PawPrint),
   },
 
   // Lifestyle
 
   travel: {
     label: "Travel",
-    icon: Plane,
+    icon: withFill(Airplane),
   },
 
   entertainment: {
     label: "Entertainment",
-    icon: Film,
+    icon: withFill(FilmSlate),
   },
 
   gaming: {
     label: "Gaming",
-    icon: Gamepad2,
+    icon: withFill(GameController),
   },
 
   gift: {
     label: "Gift",
-    icon: Gift,
+    icon: withFill(Gift),
   },
 
   // Personal
 
   education: {
     label: "Education",
-    icon: GraduationCap,
+    icon: withFill(GraduationCap),
   },
 
   fitness: {
     label: "Fitness",
-    icon: Dumbbell,
+    icon: withFill(Barbell),
   },
 
   health: {
     label: "Health",
-    icon: HeartPulse,
+    icon: withFill(Heartbeat),
   },
 
   // Miscellaneous
 
   subscription: {
     label: "Subscription",
-    icon: Repeat,
+    icon: withFill(ArrowsClockwise),
   },
 
   other: {
     label: "Other",
-    icon: CircleHelp,
+    icon: withFill(DotsThreeCircle),
   },
 };
 

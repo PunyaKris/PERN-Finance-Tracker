@@ -1,0 +1,111 @@
+.inbox-transaction-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
+  cursor: grab;
+  touch-action: none;
+  transition:
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+}
+
+.inbox-transaction-card--dragging {
+  opacity: 0.78;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.16);
+}
+
+.inbox-transaction-card__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.inbox-transaction-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(
+    --accent-icon-bg,
+    linear-gradient(135deg, #f3f4f6 0%, #ffffff 100%)
+  );
+  border: none;
+  color: var(--accent-icon-color, #111827);
+  flex-shrink: 0;
+}
+
+.inbox-transaction-card__icon svg {
+  transform: scale(1.15);
+}
+
+.inbox-transaction-card__icon-fallback {
+  font-size: 20px;
+  color: var(--muted-foreground);
+}
+
+.inbox-transaction-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.inbox-transaction-card__title {
+  font-weight: 700;
+  color: var(--foreground);
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.inbox-transaction-card__subtitle {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--muted-foreground);
+  font-size: 0.88rem;
+}
+
+.inbox-transaction-card__note-row {
+  margin-top: 4px;
+}
+
+.inbox-transaction-card__note {
+  color: var(--muted-foreground);
+  font-size: 0.78rem;
+  line-height: 1.2;
+}
+
+.inbox-transaction-card__amount {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-weight: 800;
+  font-size: 1rem;
+  min-width: 92px;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.inbox-transaction-card__amount--expense {
+  color: #dc2626;
+}
+
+.inbox-transaction-card__amount--income {
+  color: #059669;
+}
+
+.inbox-transaction-card__amount-sign {
+  opacity: 0.9;
+  font-weight: 800;
+}

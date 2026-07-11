@@ -1,0 +1,117 @@
+:root {
+  color-scheme: dark;
+
+  --background: #181a24;
+  --foreground: #e6eaf3;
+
+  --card: #23243a;
+  --card-foreground: #e6eaf3;
+
+  --sidebar-background: #23243a;
+  --sidebar-foreground: #e6eaf3;
+  --sidebar-primary: #3a5ba0;
+  --sidebar-primary-foreground: #ffe066;
+  --sidebar-accent: #ffe066;
+  --sidebar-accent-foreground: #23243a;
+  --sidebar-border: #2d2e3e;
+  --sidebar-ring: #ffe066;
+
+  --primary: #3a5ba0;
+  --primary-foreground: #ffe066;
+
+  --secondary: #ffe066;
+  --secondary-foreground: #23243a;
+
+  --accent: #bccdf0;
+  --accent-foreground: #181a24;
+
+  --muted: #1d1e2f;
+  --muted-foreground: #7a88a1;
+
+  --popover: #23243a;
+  --popover-foreground: #ffe066;
+
+  --border: #2d2e3e;
+  --input: #3a5ba0;
+  --ring: #ffe066;
+
+  --surface: #23243a;
+  --surface-elevated: #2a2b3c;
+  --surface-muted: #1d1e2f;
+  --surface-hover: #2d2e3e;
+  --surface-border: #2d2e3e;
+  --text-muted: #7a88a1;
+  --text-subtle: #8b95a8;
+  --focus-ring: #ffe066;
+  --overlay: rgba(2, 6, 23, 0.45);
+  --overlay-strong: rgba(17, 24, 39, 0.92);
+
+  --destructive: #a04a6c;
+  --destructive-foreground: #ffe066;
+
+  --radius: 0.5rem;
+  --spacing: 0.25rem;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+:root.theme-light {
+  color-scheme: light;
+
+  --background: #f4f7fb;
+  --foreground: #0f172a;
+
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+
+  --sidebar-background: #ffffff;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #3a5ba0;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e8eefc;
+  --sidebar-accent-foreground: #0f172a;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #3a5ba0;
+
+  --primary: #3a5ba0;
+  --primary-foreground: #ffffff;
+
+  --secondary: #e8eefc;
+  --secondary-foreground: #0f172a;
+
+  --accent: #7c3aed;
+  --accent-foreground: #ffffff;
+
+  --muted: #eef2f7;
+  --muted-foreground: #64748b;
+
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+
+  --border: #e2e8f0;
+  --input: #ffffff;
+  --ring: #3a5ba0;
+
+  --surface: #ffffff;
+  --surface-elevated: #f8fafc;
+  --surface-muted: #f4f7fb;
+  --surface-hover: #eef2f7;
+  --surface-border: #e2e8f0;
+  --text-muted: #64748b;
+  --text-subtle: #94a3b8;
+  --focus-ring: #3a5ba0;
+  --overlay: rgba(15, 23, 42, 0.42);
+  --overlay-strong: rgba(15, 23, 42, 0.76);
+
+  --destructive: #b91c1c;
+  --destructive-foreground: #ffffff;
+}
+
+body {
+  margin: 0;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+* {
+  box-sizing: border-box;
+}

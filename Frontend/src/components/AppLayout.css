@@ -1,20 +1,21 @@
 .app-layout {
   display: flex;
   min-height: 100vh;
-  background: #f5f7fb;
-  color: #111827;
+  background: var(--background);
+  color: var(--foreground);
 }
 
 .app-layout__sidebar {
-  width: 280px;
+  width: 204px;
   flex-shrink: 0;
-  background: #ffffff;
-  border-right: 1px solid #e5e7eb;
+  background: var(--card);
+  border-right: 1px solid var(--border);
 }
 
 .app-layout__main {
   flex: 1;
-  padding: 32px 36px;
+  min-width: 0;
+  padding: 28px 30px;
   overflow-y: auto;
 }
 
@@ -26,10 +27,16 @@
   .app-layout__sidebar {
     width: 100%;
     border-right: none;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border);
   }
 
   .app-layout__main {
     padding: 24px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-layout__main {
+    padding: 18px 14px;
   }
 }

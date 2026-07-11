@@ -1,7 +1,7 @@
 import api from "./api";
 
 export const getRecentTransactionService = async () => {
-  const transactions = await api.get("/transaction?limit=7");
+  const transactions = await api.get("/transaction?limit=15");
   return transactions;
 };
 

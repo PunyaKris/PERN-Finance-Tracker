@@ -1,0 +1,206 @@
+.drop-budget-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(238, 242, 247, 0.95);
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+  width: min(100%, calc(100% - 10%));
+  min-height: 110px;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.drop-budget-card--active {
+  transform: translateY(-2px);
+  border-color: var(--accent-hover-border, rgba(124, 58, 237, 0.35));
+  box-shadow: var(--accent-hover-shadow, 0 14px 32px rgba(124, 58, 237, 0.14));
+}
+
+.drop-budget-card--loading {
+  opacity: 0.86;
+  transform: scale(0.985);
+  box-shadow: 0 12px 28px rgba(124, 58, 237, 0.1);
+}
+
+.drop-budget-card--success {
+  animation: drop-budget-card-success 700ms ease;
+}
+
+.drop-budget-card__main {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  width: 100%;
+  min-width: 0;
+}
+
+.drop-budget-card__icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-icon-bg, #eef2ff);
+  border: none;
+  color: var(--accent-icon-color, #4338ca);
+  flex-shrink: 0;
+}
+
+.drop-budget-card__icon svg {
+  transform: scale(1.15);
+}
+
+.drop-budget-card__meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  flex: 1 1 auto;
+  min-height: 64px;
+}
+
+.drop-budget-card__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.drop-budget-card__title {
+  font-weight: 800;
+  color: #0f172a;
+  font-size: 1.02rem;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.drop-budget-card__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #4338ca;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border: 1px solid #c7d2fe;
+  line-height: 1;
+}
+
+.drop-budget-card__sub {
+  color: #6b7280;
+  font-size: 0.95rem;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 2px;
+}
+
+.drop-budget-card__progress {
+  width: 100%;
+  max-width: 100%;
+  height: 5px;
+  background: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid #eef2f7;
+}
+
+.drop-budget-card__progress--inactive {
+  opacity: 0.45;
+}
+
+.drop-budget-card__progress-fill {
+  height: 100%;
+  background: var(
+    --accent-progress-fill,
+    linear-gradient(90deg, #7c3aed, #a78bfa)
+  );
+  width: 0%;
+  transition: width 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.drop-budget-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+  font-size: 0.85rem;
+  min-height: 12px;
+}
+
+.drop-budget-card__percent-small {
+  color: #6b7280;
+  font-weight: 700;
+}
+
+.drop-budget-card__state {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.drop-budget-card__state--loading {
+  background: rgba(124, 58, 237, 0.12);
+  color: #6d28d9;
+}
+
+.drop-budget-card__state--success {
+  background: rgba(16, 185, 129, 0.14);
+  color: #047857;
+}
+
+.drop-budget-card__drop-here {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 12px;
+  background: var(
+    --accent-progress-fill,
+    linear-gradient(90deg, #7c3aed, #a78bfa)
+  );
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  pointer-events: none;
+}
+
+.drop-budget-card:hover .drop-budget-card__drop-here,
+.drop-budget-card--active .drop-budget-card__drop-here {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@keyframes drop-budget-card-success {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.01);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

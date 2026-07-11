@@ -1,0 +1,113 @@
+.delete-confirmation {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: min(100%, 420px);
+  box-sizing: border-box;
+  padding: 24px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+  border: 1px solid #e6edf7;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+.delete-confirmation__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #dc2626;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.delete-confirmation__content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.delete-confirmation__title {
+  margin: 0;
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.delete-confirmation__text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #475569;
+}
+
+.delete-confirmation__error {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  background: #fef2f2;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #dc2626;
+}
+
+.delete-confirmation__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.delete-confirmation__button {
+  border: 0;
+  border-radius: 12px;
+  min-height: 44px;
+  padding: 11px 16px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.delete-confirmation__button:hover {
+  transform: translateY(-1px);
+}
+
+.delete-confirmation__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+}
+
+.delete-confirmation__button--danger {
+  background: linear-gradient(90deg, #dc2626 0%, #ef4444 100%);
+  color: #fff;
+  box-shadow: 0 10px 20px rgba(220, 38, 38, 0.2);
+}
+
+.delete-confirmation__button--secondary {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+}
+
+@media (max-width: 640px) {
+  .delete-confirmation {
+    padding: 20px;
+    gap: 14px;
+  }
+
+  .delete-confirmation__actions {
+    flex-direction: column-reverse;
+  }
+
+  .delete-confirmation__button {
+    width: 100%;
+  }
+}

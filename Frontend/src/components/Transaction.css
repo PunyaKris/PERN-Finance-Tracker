@@ -4,7 +4,7 @@
   justify-content: space-between;
   gap: 24px;
   padding: 18px 0;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border);
 }
 
 .transaction:last-child {
@@ -25,11 +25,15 @@
   justify-content: center;
   width: 48px;
   height: 48px;
-  border-radius: 14px;
   border-radius: 12px;
-  background: #f3f4f6;
-  color: #111827;
+  background: var(--accent-icon-bg, #f3f4f6);
+  border: none;
+  color: var(--accent-icon-color, #111827);
   flex-shrink: 0;
+}
+
+.transaction__icon svg {
+  transform: scale(1.15);
 }
 
 .transaction__icon-fallback {
@@ -63,7 +67,7 @@
 .transaction__title {
   font-size: 1rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--foreground);
   line-height: 1.3;
 }
 
@@ -72,8 +76,8 @@
   align-items: center;
   padding: 4px 10px;
   border-radius: 999px;
-  background: #eef2ff;
-  color: #4338ca;
+  background: color-mix(in srgb, var(--primary) 16%, var(--card));
+  color: var(--primary);
   font-size: 0.72rem;
   font-weight: 600;
 }
@@ -108,16 +112,16 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  color: #6b7280;
+  color: var(--muted-foreground);
   font-size: 0.8rem;
 }
 
 .transaction__note {
-  color: #4b5563;
+  color: var(--text-subtle);
 }
 
 .transaction__date {
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .transaction__actions {
@@ -131,10 +135,10 @@
 
 .transaction__action-button {
   padding: 6px 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: white;
-  color: #4f46e5;
+  background: var(--card);
+  color: var(--primary);
   font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
@@ -142,11 +146,11 @@
 }
 
 .transaction__action-button--danger {
-  color: #b91c1c;
+  color: var(--destructive);
 }
 
 .transaction__action-button:hover {
-  background: #f9fafb;
+  background: var(--surface-hover);
   text-decoration: none;
 }
 

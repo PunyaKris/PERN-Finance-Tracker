@@ -1,7 +1,7 @@
 .unconsidered-transactions-page {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 12px;
 }
 
 .unconsidered-transactions-page__back {
@@ -9,9 +9,21 @@
   border: none;
   background: transparent;
   padding: 0;
-  color: #4f46e5;
+  color: var(--primary);
   font-weight: 600;
   cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.unconsidered-transactions-page__back:hover {
+  color: var(--foreground);
+}
+
+.unconsidered-transactions-page__top-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: -8px;
 }
 
 .unconsidered-transactions-page__header {
@@ -19,43 +31,244 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
+  padding: 0 0 0 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.unconsidered-transactions-page__summary-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 22px;
+  border-radius: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+}
+
+.unconsidered-transactions-page__summary-copy {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.unconsidered-transactions-page__summary-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--primary) 16%, var(--card)) 0%,
+    var(--card) 100%
+  );
+  border: 1px solid var(--border);
+  color: var(--primary);
+  flex-shrink: 0;
+}
+.unconsidered-transactions-page__summary-tip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  color: var(--primary);
+}
+
+.unconsidered-transactions-page__summary-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--foreground);
+}
+
+.unconsidered-transactions-page__summary-subtitle {
+  margin: 4px 0 0;
+  color: var(--muted-foreground);
+  font-size: 0.92rem;
+}
+
+.unconsidered-transactions-page__summary-tip {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  padding: 0px 15px 0px 0px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--primary) 16%, var(--card));
+  border: 1px solid color-mix(in srgb, var(--primary) 24%, var(--border));
+}
+
+.unconsidered-transactions-page__summary-tip-text {
+  margin: 0;
+  color: var(--primary);
+  font-size: 0.96rem;
+  font-weight: 700;
 }
 
 .unconsidered-transactions-page__title-group {
   display: flex;
+  align-items: center;
+  gap: 18px;
+  flex: 1;
+  min-width: 0;
+}
+
+.unconsidered-transactions-page__title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.unconsidered-transactions-page__title-block {
+  display: flex;
   flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.unconsidered-transactions-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: flex-start;
+  align-self: flex-start;
+  gap: 12px;
+  margin-top: -12px;
+  position: relative;
+}
+
+.unconsidered-transactions-page__undo-button {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: var(--card);
+  color: var(--foreground);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.unconsidered-transactions-page__undo-button:hover:not(:disabled) {
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+  transform: translateY(-1px);
+}
+
+.unconsidered-transactions-page__undo-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.unconsidered-transactions-page__undo-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary) 16%, var(--card));
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 800;
 }
 
 .unconsidered-transactions-page__title {
   margin: 0;
   font-size: 1.45rem;
   font-weight: 800;
-  color: #0f172a;
+  color: var(--foreground);
   letter-spacing: -0.02em;
 }
 
 .unconsidered-transactions-page__subtitle {
   margin: 0;
-  color: #6b7280;
+  color: var(--muted-foreground);
   font-size: 0.95rem;
   line-height: 1.5;
 }
 
-.unconsidered-transactions-page__action {
-  padding: 9px 14px;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #374151;
-  cursor: pointer;
-  font-weight: 600;
+.unconsidered-transactions-page__workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
+  gap: 24px;
+  align-items: start;
 }
 
-.unconsidered-transactions-page__transactions {
+.unconsidered-transactions-page__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: linear-gradient(
+    180deg,
+    var(--card) 0%,
+    var(--surface-muted) 100%
+  );
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.04);
+}
+
+.unconsidered-transactions-page__panel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.unconsidered-transactions-page__panel-title {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: var(--foreground);
+  letter-spacing: -0.01em;
+}
+
+.unconsidered-transactions-page__panel-subtitle {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.unconsidered-transactions-page__panel-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+.unconsidered-transactions-page__transactions-list {
   display: flex;
   flex-direction: column;
   gap: 0;
+  max-height: 560px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+  min-width: 0;
+}
+
+.unconsidered-transactions-page__budget-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .unconsidered-transactions-page__empty {
@@ -65,25 +278,86 @@
   justify-content: center;
   min-height: 220px;
   padding: 24px;
-  border: 1px dashed #d1d5db;
+  border: 1px dashed var(--border);
   border-radius: 16px;
   text-align: center;
-  color: #6b7280;
-  background: #fafafa;
+  color: var(--muted-foreground);
+  background: linear-gradient(
+    180deg,
+    var(--card) 0%,
+    var(--surface-muted) 100%
+  );
 }
 
 .unconsidered-transactions-page__empty h4 {
   margin: 0 0 6px;
-  color: #111827;
+  color: var(--foreground);
 }
 
 .unconsidered-transactions-page__empty p {
   margin: 0;
 }
 
+.unconsidered-transactions-page__toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 999px;
+  background: var(--overlay-strong);
+  color: var(--foreground);
+  font-size: 0.92rem;
+  font-weight: 600;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.2);
+}
+
+.unconsidered-transactions-page__toast-action {
+  border: none;
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .unconsidered-transactions-page__workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 640px) {
   .unconsidered-transactions-page__header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .unconsidered-transactions-page__panel {
+    padding: 16px;
+  }
+
+  .unconsidered-transactions-page__budget-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .unconsidered-transactions-page {
+    gap: 22px;
+  }
+
+  .unconsidered-transactions-page__header {
+    padding: 16px;
+  }
+
+  .unconsidered-transactions-page__title {
+    font-size: 1.28rem;
   }
 }
