@@ -169,12 +169,7 @@ const BudgetPage = () => {
             <span
               className="budget-page__icon"
               aria-hidden="true"
-              style={{
-                ...accentStyle,
-                background: accentStyle["--accent-icon-bg"],
-                color: accentStyle["--accent-icon-color"],
-                borderColor: accentStyle["--accent-hover-border"],
-              }}
+              style={accentStyle}
             >
               <Icon size={24} />
             </span>

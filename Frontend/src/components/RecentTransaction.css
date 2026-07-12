@@ -36,11 +36,12 @@
   justify-content: center;
   width: 38px;
   height: 38px;
-  border-radius: 11px;
-  background: var(--surface-muted);
+  border-radius: 50%;
+  background: var(--transaction-icon-bg, #5b82f7);
   border: none;
-  color: var(--foreground);
+  color: var(--transaction-icon-fg, #dce8ff);
   flex-shrink: 0;
+  box-shadow: none;
 }
 
 .recent-transaction__icon svg {

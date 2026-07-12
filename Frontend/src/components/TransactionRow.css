@@ -32,12 +32,13 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  border-radius: 12px;
-  background: var(--accent-icon-bg, #f3f4f6);
+  border-radius: 50%;
+  background: var(--transaction-icon-bg, #5b82f7);
   border: none;
-  color: var(--accent-icon-color, #111827);
+  color: var(--transaction-icon-fg, #dce8ff);
   flex-shrink: 0;
   transition: background-color 0.16s ease;
+  box-shadow: none;
 }
 
 .transaction-row__icon svg {

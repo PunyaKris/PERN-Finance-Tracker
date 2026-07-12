@@ -36,11 +36,7 @@ const Budget = ({
             <span
               className="dashboard-budget-card__icon"
               aria-hidden="true"
-              style={{
-                background: accentStyle["--accent-icon-bg"],
-                color: accentStyle["--accent-icon-color"],
-                borderColor: accentStyle["--accent-hover-border"],
-              }}
+              style={accentStyle}
             >
               {Icon && <Icon size={18} />}
             </span>

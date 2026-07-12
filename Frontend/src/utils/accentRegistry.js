@@ -1,7 +1,7 @@
 const accentRegistry = {
   blue: {
-    iconBackground: "#101a31",
-    iconColor: "#82b8ff",
+    iconBackground: "#50669A",
+    iconColor: "#6EA8FF",
     progressFill: "#60a5fa",
     progressTrack: "#182238",
     badgeBackground: "#13213a",
@@ -11,7 +11,7 @@ const accentRegistry = {
     hoverShadow: "0 14px 30px rgba(96, 165, 250, 0.12)",
   },
   green: {
-    iconBackground: "#102117",
+    iconBackground: "#5C8B62",
     iconColor: "#6ae09b",
     progressFill: "#4ade80",
     progressTrack: "#17271c",
@@ -22,7 +22,7 @@ const accentRegistry = {
     hoverShadow: "0 14px 30px rgba(74, 222, 128, 0.12)",
   },
   purple: {
-    iconBackground: "#171326",
+    iconBackground: "#7560A6",
     iconColor: "#b79bff",
     progressFill: "#a78bfa",
     progressTrack: "#1d1630",
@@ -33,7 +33,7 @@ const accentRegistry = {
     hoverShadow: "0 14px 30px rgba(167, 139, 250, 0.12)",
   },
   orange: {
-    iconBackground: "#24160d",
+    iconBackground: "#A77A4C",
     iconColor: "#ffb16d",
     progressFill: "#fb923c",
     progressTrack: "#2a1a12",
@@ -44,7 +44,7 @@ const accentRegistry = {
     hoverShadow: "0 14px 30px rgba(251, 146, 60, 0.12)",
   },
   teal: {
-    iconBackground: "#0c1e1e",
+    iconBackground: "#4F8D8C",
     iconColor: "#7be2d4",
     progressFill: "#2dd4bf",
     progressTrack: "#112626",
@@ -55,7 +55,7 @@ const accentRegistry = {
     hoverShadow: "0 14px 30px rgba(45, 212, 191, 0.12)",
   },
   pink: {
-    iconBackground: "#25111d",
+    iconBackground: "#A76A86",
     iconColor: "#f4a1cf",
     progressFill: "#f472b6",
     progressTrack: "#2a1220",
@@ -66,7 +66,7 @@ const accentRegistry = {
     hoverShadow: "0 14px 30px rgba(244, 114, 182, 0.12)",
   },
   red: {
-    iconBackground: "#251216",
+    iconBackground: "#A76469",
     iconColor: "#f6999f",
     progressFill: "#f87171",
     progressTrack: "#2a1318",
@@ -77,7 +77,7 @@ const accentRegistry = {
     hoverShadow: "0 14px 30px rgba(248, 113, 113, 0.12)",
   },
   amber: {
-    iconBackground: "#241b0e",
+    iconBackground: "#A98B50",
     iconColor: "#f7c46d",
     progressFill: "#fbbf24",
     progressTrack: "#2a1e10",
@@ -88,7 +88,7 @@ const accentRegistry = {
     hoverShadow: "0 14px 30px rgba(251, 191, 36, 0.12)",
   },
   indigo: {
-    iconBackground: "#12172d",
+    iconBackground: "#626FB0",
     iconColor: "#a6b2ff",
     progressFill: "#818cf8",
     progressTrack: "#171d36",
@@ -99,7 +99,7 @@ const accentRegistry = {
     hoverShadow: "0 14px 30px rgba(129, 140, 248, 0.12)",
   },
   cyan: {
-    iconBackground: "#0c1a22",
+    iconBackground: "#4E8EA8",
     iconColor: "#81e8f8",
     progressFill: "#22d3ee",
     progressTrack: "#10242a",
@@ -110,7 +110,7 @@ const accentRegistry = {
     hoverShadow: "0 14px 30px rgba(34, 211, 238, 0.12)",
   },
   lime: {
-    iconBackground: "#1a220e",
+    iconBackground: "#7C9E4E",
     iconColor: "#b8df66",
     progressFill: "#84cc16",
     progressTrack: "#1f2911",
@@ -121,7 +121,7 @@ const accentRegistry = {
     hoverShadow: "0 14px 30px rgba(132, 204, 22, 0.12)",
   },
   violet: {
-    iconBackground: "#171325",
+    iconBackground: "#8665B5",
     iconColor: "#c0a7ff",
     progressFill: "#a78bfa",
     progressTrack: "#1b1430",
@@ -132,7 +132,7 @@ const accentRegistry = {
     hoverShadow: "0 14px 30px rgba(167, 139, 250, 0.12)",
   },
   rose: {
-    iconBackground: "#29111a",
+    iconBackground: "#A76A77",
     iconColor: "#f7a0b7",
     progressFill: "#fb7185",
     progressTrack: "#2a1220",
@@ -143,7 +143,7 @@ const accentRegistry = {
     hoverShadow: "0 14px 30px rgba(251, 113, 133, 0.12)",
   },
   sky: {
-    iconBackground: "#0d1d2d",
+    iconBackground: "#5E8FB4",
     iconColor: "#86d6ff",
     progressFill: "#38bdf8",
     progressTrack: "#102738",
@@ -154,7 +154,7 @@ const accentRegistry = {
     hoverShadow: "0 14px 30px rgba(56, 189, 248, 0.12)",
   },
   emerald: {
-    iconBackground: "#0f2117",
+    iconBackground: "#4F8E72",
     iconColor: "#78e1af",
     progressFill: "#34d399",
     progressTrack: "#12261b",

@@ -22,12 +22,7 @@ const Transaction = ({
         <div
           className="transaction__icon"
           aria-hidden="true"
-          style={{
-            ...accentStyle,
-            background: accentStyle["--accent-icon-bg"],
-            color: accentStyle["--accent-icon-color"],
-            borderColor: accentStyle["--accent-hover-border"],
-          }}
+          style={accentStyle}
         >
           {Icon ? (
             <Icon size={18} />

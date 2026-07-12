@@ -33,14 +33,13 @@
   justify-content: center;
   width: 48px;
   height: 48px;
-  border-radius: 12px;
-  background: var(
-    --accent-icon-bg,
-    linear-gradient(135deg, #f3f4f6 0%, #ffffff 100%)
-  );
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent-icon-bg) 18%, var(--card));
   border: none;
   color: var(--accent-icon-color, #111827);
   flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var(--accent-icon-bg) 24%, transparent);
 }
 
 .inbox-transaction-card__icon svg {

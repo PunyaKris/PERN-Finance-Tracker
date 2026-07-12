@@ -44,12 +44,7 @@ const DropBudgetCard = ({ budget, isActiveDrag, isAssigning, isSuccess }) => {
         <div
           className="drop-budget-card__icon"
           aria-hidden="true"
-          style={{
-            ...accentStyle,
-            background: accentStyle["--accent-icon-bg"],
-            color: accentStyle["--accent-icon-color"],
-            borderColor: accentStyle["--accent-hover-border"],
-          }}
+          style={accentStyle}
         >
           {Icon && <Icon size={28} />}
         </div>

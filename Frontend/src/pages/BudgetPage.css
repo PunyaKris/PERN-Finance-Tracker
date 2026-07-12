@@ -66,19 +66,16 @@
   justify-content: center;
   width: 50px;
   height: 50px;
-  border-radius: 12px;
-  background: var(
-    --accent-icon-bg,
-    linear-gradient(135deg, var(--surface-muted) 0%, var(--surface) 100%)
-  );
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent-icon-bg) 32%, var(--card));
   border: none;
-  color: var(--foreground);
+  color: color-mix(in srgb, var(--accent-icon-color) 88%, #ffffff 12%);
   flex-shrink: 0;
   box-shadow: none;
 }
 
 .budget-page__icon svg {
-  transform: scale(1.15);
+  transform: scale(1.18);
 }
 
 .budget-page__title {

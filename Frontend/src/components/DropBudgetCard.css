@@ -50,10 +50,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--accent-icon-bg, #eef2ff);
+  background: color-mix(in srgb, var(--accent-icon-bg) 18%, var(--card));
   border: none;
   color: var(--accent-icon-color, #4338ca);
   flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var(--accent-icon-bg) 24%, transparent);
 }
 
 .drop-budget-card__icon svg {
