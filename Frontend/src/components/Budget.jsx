@@ -8,6 +8,7 @@ import {
 import { iconRegistry } from "../utils/iconRegistry";
 import { getAccentStyleVars } from "../utils/accentRegistry";
 import StatsCard from "./StatsCard";
+import "./StatsCard.css";
 
 const Budget = ({
   budget,
@@ -23,6 +24,12 @@ const Budget = ({
   const spentLabel = budget.budgetType === "EXPENSE" ? "Spent" : "Earned";
   const budgetTypeLabel =
     budget.budgetType === "EXPENSE" ? "Expense" : "Income";
+  const budgetStatValueToneClass = {
+    Earned: "dashboard-budget-card__stat-value--earned",
+    Spent: "dashboard-budget-card__stat-value--spent",
+    Limit: "dashboard-budget-card__stat-value--limit",
+    Left: "dashboard-budget-card__stat-value--left",
+  };
 
   if (!isBudgetPage) {
     return (
@@ -55,15 +62,21 @@ const Budget = ({
         <div className="dashboard-budget-card__stats">
           <div className="dashboard-budget-card__stat">
             <span>{spentLabel}</span>
-            <strong>{formatCurrency(budget.daily.amount)}</strong>
+            <strong className={budgetStatValueToneClass[spentLabel]}>
+              {formatCurrency(budget.daily.amount)}
+            </strong>
           </div>
           <div className="dashboard-budget-card__stat">
             <span>Limit</span>
-            <strong>{formatCurrency(budget.daily.limit)}</strong>
+            <strong className={budgetStatValueToneClass.Limit}>
+              {formatCurrency(budget.daily.limit)}
+            </strong>
           </div>
           <div className="dashboard-budget-card__stat">
             <span>Left</span>
-            <strong>{formatCurrency(budget.daily.left)}</strong>
+            <strong className={budgetStatValueToneClass.Left}>
+              {formatCurrency(budget.daily.left)}
+            </strong>
           </div>
         </div>
 

@@ -1,15 +1,16 @@
 .dashboard-budget-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   grid-column: 1;
   min-width: 0;
   align-self: start;
+  margin-top: 2px;
 }
 
 .dashboard-budget-list__panel {
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: 16px;
   background: linear-gradient(
     180deg,
     var(--surface) 0%,
@@ -18,10 +19,10 @@
   box-shadow: 0 12px 28px
     color-mix(in srgb, var(--overlay-strong) 16%, transparent);
   overflow: hidden;
-  padding: 14px 14px 12px;
+  padding: 12px 12px 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .dashboard-budget-list__panel-header {
@@ -29,12 +30,12 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 2px 2px 6px;
+  padding: 1px 1px 4px;
 }
 
 .dashboard-budget-list__title {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.94rem;
   font-weight: 700;
   color: var(--foreground);
   letter-spacing: -0.01em;
@@ -48,8 +49,8 @@
   border-radius: 10px;
   background: var(--surface-muted);
   color: var(--foreground);
-  padding: 7px 10px;
-  font-size: 0.78rem;
+  padding: 6px 8px;
+  font-size: 0.74rem;
   font-weight: 700;
   cursor: pointer;
 }
@@ -57,11 +58,11 @@
 .dashboard-budget-list__items {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .dashboard-budget-list__items > div {
-  padding: 12px 12px 10px;
+  padding: 14px 14px 12px;
   border: 1px solid var(--border);
   border-radius: 14px;
   background: var(--surface);
@@ -84,7 +85,7 @@
 .dashboard-budget-card {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 92px 92px 92px 40px;
-  gap: 6px 10px;
+  gap: 8px 10px;
   align-items: center;
   padding: 0;
 }
@@ -97,7 +98,7 @@
   grid-column: 1 / 2;
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 12px;
   min-width: 0;
 }
 
@@ -107,7 +108,7 @@
   justify-content: center;
   width: 47px;
   height: 47px;
-  border-radius: 10px;
+  border-radius: 9px;
   background: color-mix(in srgb, var(--accent-icon-bg) 32%, var(--card));
   border: none;
   color: color-mix(in srgb, var(--accent-icon-color) 88%, #ffffff 12%);
@@ -138,7 +139,8 @@
 }
 
 .dashboard-budget-card__title-group p {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
+  font-weight: 500;
   color: var(--muted-foreground);
   line-height: 1.2;
   overflow: hidden;
@@ -152,6 +154,7 @@
   align-self: center;
   flex-shrink: 0;
   color: var(--muted-foreground);
+  transform: translateY(1px);
 }
 
 .dashboard-budget-card__stats {
@@ -174,7 +177,7 @@
 .dashboard-budget-card__stat {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   min-width: 0;
   justify-content: flex-start;
   align-items: flex-start;
@@ -182,14 +185,16 @@
 }
 
 .dashboard-budget-card__stat span {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color: var(--muted-foreground);
+  line-height: 1.2;
 }
 
 .dashboard-budget-card__stat strong {
   font-size: 0.9rem;
   font-weight: 700;
+  line-height: 1.35;
   color: var(--foreground);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -202,7 +207,8 @@
   grid-template-columns: 1fr auto;
   gap: 10px;
   align-items: center;
-  padding-top: 8px;
+  padding-top: 10px;
+  margin-top: 2px;
 }
 
 .dashboard-budget-card__progress {

@@ -11,14 +11,16 @@ const StatsCard = ({
   variant = "dashboard",
 }) => {
   const safeProgress = Number(progress);
-  const progressTone =
+  const progressToneClass =
     progress == null || !Number.isFinite(safeProgress)
       ? ""
       : safeProgress >= 90
-        ? "stats-card__progress-fill--danger"
-        : safeProgress >= 70
-          ? "stats-card__progress-fill--warning"
-          : "stats-card__progress-fill--good";
+        ? "stats-card__progress-fill--red"
+        : safeProgress >= 80
+          ? "stats-card__progress-fill--orange"
+          : safeProgress >= 50
+            ? "stats-card__progress-fill--yellow"
+            : "stats-card__progress-fill--green";
 
   const statChildren = Children.toArray(children).filter(Boolean);
   const limitChild = statChildren.find(
@@ -34,13 +36,20 @@ const StatsCard = ({
     const metricValue = childProps.value ?? fallbackValue;
     const isLimitMetric = metricTitle === "Limit" || metricTitle === "Left";
     const isUnsetMetric = isLimitMetric && !hasActiveLimit;
+    const metricToneClass = isUnsetMetric
+      ? "stats-card__metric-value--muted"
+      : metricTitle === "Earned"
+        ? "stats-card__metric-value--earned"
+        : metricTitle === "Spent"
+          ? "stats-card__metric-value--spent"
+          : metricTitle === "Left"
+            ? "stats-card__metric-value--left"
+            : "stats-card__metric-value--limit";
 
     return (
       <div key={keyId} className="stats-card__metric">
         <span className="stats-card__metric-label">{metricTitle}</span>
-        <span
-          className={`stats-card__metric-value${isUnsetMetric ? " stats-card__metric-value--muted" : ""}`}
-        >
+        <span className={`stats-card__metric-value ${metricToneClass}`}>
           {isUnsetMetric
             ? metricTitle === "Limit"
               ? "Not set"
@@ -50,6 +59,20 @@ const StatsCard = ({
       </div>
     );
   };
+
+  const dashboardAccentClass =
+    variant === "dashboard"
+      ? (() => {
+          const normalizedTitle = (title || "").toLowerCase();
+          if (normalizedTitle.includes("today"))
+            return "stats-card__header-icon--today";
+          if (normalizedTitle.includes("month"))
+            return "stats-card__header-icon--month";
+          if (normalizedTitle.includes("year"))
+            return "stats-card__header-icon--year";
+          return "";
+        })()
+      : "";
 
   const renderDashboardLayout = () => {
     const dashboardSlots = [0, 1, 2, 3].map((index) => {
@@ -75,6 +98,11 @@ const StatsCard = ({
     const primaryProps = primaryChild?.props ?? {};
     const primaryTitle = primaryProps.title ?? "";
     const primaryValue = primaryProps.value ?? null;
+    const primaryToneClass = primaryTitle.includes("Earned")
+      ? "stats-card__budget-primary-value--earned"
+      : primaryTitle.includes("Spent")
+        ? "stats-card__budget-primary-value--spent"
+        : "";
     const secondaryChildren = statChildren.slice(1);
 
     return (
@@ -83,7 +111,9 @@ const StatsCard = ({
           <span className="stats-card__budget-primary-label">
             {primaryTitle}
           </span>
-          <strong className="stats-card__budget-primary-value">
+          <strong
+            className={`stats-card__budget-primary-value ${primaryToneClass}`.trim()}
+          >
             {primaryValue == null ? "—" : formatCurrency(primaryValue)}
           </strong>
         </div>
@@ -117,7 +147,10 @@ const StatsCard = ({
         {title && <h3 className="stats-card__title">{title}</h3>}
 
         {headerIcon ? (
-          <span className="stats-card__header-icon" aria-hidden="true">
+          <span
+            className={`stats-card__header-icon ${dashboardAccentClass}`.trim()}
+            aria-hidden="true"
+          >
             {headerIcon}
           </span>
         ) : variant === "budget" ? (
@@ -135,14 +168,19 @@ const StatsCard = ({
         >
           {hasActiveLimit && (
             <div
-              className={`stats-card__progress-fill ${progressTone}`}
+              className={`stats-card__progress-fill ${progressToneClass}`}
               style={{ width: `${Math.min(100, Math.max(0, safeProgress))}%` }}
             />
           )}
         </div>
 
         {showPercentageBadge && (
-          <span className="stats-card__percent stats-card__percent--inline">
+          <span
+            className={`stats-card__percent stats-card__percent--inline ${progressToneClass}`.replace(
+              "stats-card__progress-fill",
+              "stats-card__percent",
+            )}
+          >
             {formatPercentage(safeProgress)}
           </span>
         )}

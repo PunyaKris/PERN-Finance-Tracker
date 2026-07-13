@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { CalendarDays } from "lucide-react";
+import { Plus } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../components/AppLayout";
 import getUserStats from "../services/dashboardStatService";
@@ -217,10 +218,12 @@ const DashboardPage = () => {
 
           <div className="dashboard-page__actions">
             <button onClick={() => setShowModal(true)} disabled={!budgets}>
-              ➕ Add Transaction
+              <Plus size={18} weight="bold" />
+              Add Transaction
             </button>
             <button onClick={() => setShowBudgetForm(true)}>
-              ➕ Add Budget
+              <Plus size={18} weight="bold" />
+              Add Budget
             </button>
           </div>
         </header>

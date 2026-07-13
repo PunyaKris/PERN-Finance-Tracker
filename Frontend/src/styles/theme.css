@@ -1,6 +1,81 @@
 :root {
   color-scheme: dark;
 
+  /* App background */
+  --background: #1b222d;
+  --foreground: #edf2fa;
+
+  /* Cards */
+  --card: #222b37;
+  --card-foreground: #edf2fa;
+
+  /* Sidebar */
+  --sidebar-background: #1d2530;
+  --sidebar-foreground: #d9e1ed;
+
+  --sidebar-primary: #2d4f97;
+  --sidebar-primary-foreground: #78a9ff;
+
+  --sidebar-accent: #2a3342;
+  --sidebar-accent-foreground: #e5ecf8;
+
+  --sidebar-border: #2d3745;
+  --sidebar-ring: #5e8fff;
+
+  /* Brand */
+  --primary: #4269c8;
+  --primary-foreground: #f8faff;
+
+  /* Secondary buttons */
+  --secondary: #2b3443;
+  --secondary-foreground: #dce4f2;
+
+  /* Interactive */
+  --accent: #78a9ff;
+  --accent-foreground: #ffffff;
+
+  /* Muted */
+  --muted: #202734;
+  --muted-foreground: #8b97ab;
+
+  /* Popover */
+  --popover: #242d3a;
+  --popover-foreground: #edf2fa;
+
+  /* Borders */
+  --border: #313b49;
+  --input: #2e3947;
+  --ring: #6c97ff;
+
+  /* Surfaces */
+  --surface: #222b37;
+  --surface-elevated: #283241;
+  --surface-muted: #1e2632;
+  --surface-hover: #2c3645;
+  --surface-border: #313b49;
+
+  /* Text */
+  --text-muted: #8b97ab;
+  --text-subtle: #a1adbf;
+
+  /* Overlay */
+  --overlay: rgba(12, 18, 28, 0.55);
+  --overlay-strong: rgba(10, 15, 24, 0.9);
+
+  /* Destructive */
+  --destructive: #d45b72;
+  --destructive-foreground: #ffffff;
+
+  /* Misc */
+  --focus-ring: #6c97ff;
+  --radius: 0.5rem;
+  --spacing: 0.25rem;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+/* :root {
+  color-scheme: dark;
+
   --background: #181a24;
   --foreground: #e6eaf3;
 
@@ -52,7 +127,7 @@
   --radius: 0.5rem;
   --spacing: 0.25rem;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
+} */
 
 :root.theme-light {
   color-scheme: light;

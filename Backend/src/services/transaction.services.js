@@ -158,6 +158,7 @@ export async function getAllTransaction({
       select: {
         id: true,
         name: true,
+        accentColor: true,
       },
     },
   };

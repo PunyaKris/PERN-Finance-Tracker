@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { formatCurrency, formatDateTime } from "../utils/formatters";
 import { iconRegistry } from "../utils/iconRegistry";
+import { getAccentStyleVars } from "../utils/accentRegistry";
 import "./RecentTransaction.css";
 
 const TRANSACTION_ICON_PALETTE = {
@@ -41,6 +42,7 @@ const RecentTransaction = ({ transaction }) => {
   const navigate = useNavigate();
   const Icon = iconRegistry[transaction.icon]?.icon;
   const accentStyle = getTransactionIconStyle(transaction?.accentColor);
+  const badgeStyle = getAccentStyleVars(transaction?.budget?.accentColor);
   const amountClassName =
     transaction.type == "EXPENSE"
       ? "recent-transaction__amount recent-transaction__amount--expense"
@@ -78,6 +80,7 @@ const RecentTransaction = ({ transaction }) => {
             </span>
             <span
               className="recent-transaction__badge recent-transaction__badge--clickable"
+              style={badgeStyle}
               onClick={handleBadgeClick}
               role="link"
               tabIndex={0}

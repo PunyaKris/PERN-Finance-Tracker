@@ -1,7 +1,7 @@
 .dashboard-page {
   display: grid;
   grid-template-columns: minmax(0, 1.82fr) minmax(280px, 0.68fr);
-  gap: 20px 22px;
+  gap: 10px 10px;
   width: 100%;
   margin-top: 0;
   padding: 0 0 6px;
@@ -26,7 +26,7 @@
 
 .dashboard-page__title {
   margin: 0;
-  font-size: clamp(1.5rem, 2.3vw, 2rem);
+  font-size: clamp(1rem, 2vw, 1.5rem);
   font-weight: 800;
   color: var(--foreground);
   letter-spacing: -0.04em;
@@ -47,18 +47,26 @@
   gap: 10px;
   align-items: center;
   justify-content: flex-end;
-  padding-top: 0;
+  padding-bottom: 7px;
 }
 
 .dashboard-page__actions > button {
-  min-height: 46px;
-  padding: 11px 16px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface-muted);
-  color: var(--foreground);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 7px;
   cursor: pointer;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 400;
+  background: #2c3558;
+  color: #6e96ff;
+  border: 1px solid #455784;
+  box-shadow: none;
+  font-weight: 400;
   transition:
     border-color 180ms ease,
     box-shadow 180ms ease,
@@ -66,7 +74,7 @@
 }
 
 .dashboard-page__actions > button:hover {
-  border-color: color-mix(in srgb, var(--border) 68%, var(--primary));
+  border-color: transparent;
   box-shadow: 0 10px 22px
     color-mix(in srgb, var(--overlay-strong) 18%, transparent);
   transform: translateY(-1px);
@@ -81,17 +89,6 @@
   opacity: 0.65;
   transform: none;
   box-shadow: none;
-}
-
-.dashboard-page__actions > button:first-child {
-  background: var(--primary);
-  color: var(--primary-foreground);
-  border-color: transparent;
-  box-shadow: 0 14px 28px color-mix(in srgb, var(--primary) 34%, transparent);
-}
-
-.dashboard-page__actions > button:first-child:hover {
-  border-color: transparent;
 }
 
 .dashboard-page__stats {
@@ -121,7 +118,7 @@
   min-width: 0;
   padding: 14px;
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: 16px;
   background: linear-gradient(
     180deg,
     var(--surface) 0%,
