@@ -28,7 +28,7 @@
   margin: -22px 0px 0px 0px;
   font-size: clamp(1rem, 2vw, 1.32rem);
   font-weight: 500;
-  color: var(--foreground);
+  color: color-mix(in srgb, var(--foreground) 87%, transparent);
   letter-spacing: -0.02em;
   line-height: 1.16;
   font-family:

@@ -10,7 +10,7 @@
 
 .dashboard-budget-list__panel {
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 12px;
   background: linear-gradient(
     180deg,
     var(--surface) 0%,
@@ -37,7 +37,7 @@
   margin: 0;
   font-size: 0.9rem;
   font-weight: 500;
-  color: var(--foreground);
+  color: color-mix(in srgb, var(--foreground) 87%, transparent);
   letter-spacing: -0.01em;
   font-family:
     Inter,
@@ -52,9 +52,9 @@
   align-items: center;
   gap: 6px;
   border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--surface-muted);
-  color: var(--foreground);
+  color: color-mix(in srgb, var(--foreground) 80%, transparent);
   padding: 5px 8px;
   font-size: 0.7rem;
   font-weight: 500;
@@ -75,7 +75,7 @@
 }
 
 .dashboard-budget-list__items > div {
-  padding: 14px 14px 12px;
+  padding: 10px 14px 8px;
   border: 1px solid var(--border);
   border-radius: 14px;
   background: var(--surface);
@@ -97,8 +97,14 @@
 
 .dashboard-budget-card {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(76px, 90px) minmax(76px, 90px) minmax(76px, 90px) 38px;
-  gap: 8px 10px;
+  grid-template-columns:
+    56px
+    minmax(240px, 1.8fr)
+    1fr
+    1fr
+    1fr
+    40px;
+  gap: 8px 20px;
   align-items: center;
   padding: 0;
 }
@@ -108,10 +114,10 @@
 }
 
 .dashboard-budget-card__identity {
-  grid-column: 1 / 2;
+  grid-column: 1 / 3;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   min-width: 0;
 }
 
@@ -119,8 +125,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   border-radius: 9px;
   background: color-mix(in srgb, var(--accent-icon-bg) 32%, var(--card));
   border: none;
@@ -130,7 +136,7 @@
 }
 
 .dashboard-budget-card__icon svg {
-  transform: scale(1.2);
+  transform: scale(1.22);
 }
 
 .dashboard-budget-card__title-group {
@@ -143,9 +149,9 @@
 }
 
 .dashboard-budget-card__title-group h4 {
-  font-size: 0.94rem;
-  font-weight: 600;
-  color: var(--foreground);
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--foreground) 87%, transparent);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -165,6 +171,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  margin-top: 5px;
   font-family:
     Inter,
     -apple-system,
@@ -172,14 +179,15 @@
     "Segoe UI",
     sans-serif;
 }
-
 .dashboard-budget-card__menu-icon {
-  grid-column: 5 / 6;
+  grid-column: 6 / 7;
   justify-self: end;
   align-self: center;
   flex-shrink: 0;
   color: var(--muted-foreground);
   transform: translateY(1px);
+  opacity: 78%;
+  margin-top: -5px;
 }
 
 .dashboard-budget-card__stats {
@@ -187,32 +195,32 @@
 }
 
 .dashboard-budget-card__stat:nth-child(1) {
-  grid-column: 2 / 3;
-  grid-row: 1;
-}
-.dashboard-budget-card__stat:nth-child(2) {
   grid-column: 3 / 4;
   grid-row: 1;
 }
-.dashboard-budget-card__stat:nth-child(3) {
+.dashboard-budget-card__stat:nth-child(2) {
   grid-column: 4 / 5;
+  grid-row: 1;
+}
+.dashboard-budget-card__stat:nth-child(3) {
+  grid-column: 5 / 6;
   grid-row: 1;
 }
 
 .dashboard-budget-card__stat {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 6px;
   min-width: 0;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 0 6px;
+  padding: 0;
 }
 
 .dashboard-budget-card__stat span {
-  font-size: 0.68rem;
-  font-weight: 500;
-  color: var(--muted-foreground);
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: color-mix(in srgb, var(--foreground) 60%, transparent);
   line-height: 1.2;
   font-family:
     Inter,
@@ -226,7 +234,6 @@
   font-size: 0.88rem;
   font-weight: 600;
   line-height: 1.3;
-  color: var(--foreground);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -238,19 +245,34 @@
     sans-serif;
 }
 
+.dashboard-budget-card__stat-value--earned {
+  color: #7bc67e;
+}
+
+.dashboard-budget-card__stat-value--spent {
+  color: #e97878;
+}
+
+.dashboard-budget-card__stat-value--limit {
+  color: var(--muted-foreground);
+}
+
+.dashboard-budget-card__stat-value--left {
+  color: #7d9ef0;
+}
+
 .dashboard-budget-card__progress-row {
-  grid-column: 2 / 5;
+  grid-column: 2 / 7;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: 1fr auto;
   gap: 8px;
   align-items: center;
-  padding-top: 10px;
-  margin-top: 2px;
-  padding-right: 2px;
+  padding-top: 0px;
+  margin-top: 0px;
 }
 
 .dashboard-budget-card__progress {
-  height: 6px;
+  height: 5.5px;
   background: var(--surface-muted);
   border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
   border-radius: 999px;
@@ -269,15 +291,15 @@
   align-items: center;
   justify-content: center;
   min-height: 22px;
-  padding: 0 8px;
+  padding: 0 7px;
   border-radius: 4px;
   border: 1px solid color-mix(in srgb, currentColor 26%, transparent);
   background: color-mix(in srgb, currentColor 10%, transparent);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 600;
   color: var(--primary);
   justify-self: end;
-  margin-left: 0;
+  margin-left: 9px;
   line-height: 1;
   white-space: nowrap;
   box-sizing: border-box;

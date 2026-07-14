@@ -46,7 +46,7 @@ const Budget = ({
               aria-hidden="true"
               style={accentStyle}
             >
-              {Icon && <Icon size={18} />}
+              {Icon && <Icon size={19} />}
             </span>
             <div className="dashboard-budget-card__title-group">
               <h4>{budget.name}</h4>
