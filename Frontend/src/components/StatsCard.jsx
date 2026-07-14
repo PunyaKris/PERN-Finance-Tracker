@@ -30,6 +30,10 @@ const StatsCard = ({
   const hasActiveLimit =
     Number.isFinite(Number(limitValue)) && Number(limitValue) > 0;
   const showPercentageBadge = hasActiveLimit && progress != null;
+  const percentToneClass = progressToneClass.replace(
+    "stats-card__progress-fill",
+    "stats-card__percent",
+  );
   const renderMetricCell = (child, fallbackTitle, fallbackValue, keyId) => {
     const childProps = child?.props ?? {};
     const metricTitle = childProps.title ?? fallbackTitle;
@@ -176,10 +180,7 @@ const StatsCard = ({
 
         {showPercentageBadge && (
           <span
-            className={`stats-card__percent stats-card__percent--inline ${progressToneClass}`.replace(
-              "stats-card__progress-fill",
-              "stats-card__percent",
-            )}
+            className={`stats-card__percent-badge ${percentToneClass}`.trim()}
           >
             {formatPercentage(safeProgress)}
           </span>

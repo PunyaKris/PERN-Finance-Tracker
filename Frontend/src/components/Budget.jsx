@@ -21,6 +21,7 @@ const Budget = ({
   const Icon = iconRegistry[budget.icon]?.icon;
   const accentStyle = getAccentStyleVars(budget?.accentColor);
   const progress = getSafeProgress(budget.daily.amount, budget.daily.limit);
+  const progressColor = accentStyle["--accent-progress-fill"];
   const spentLabel = budget.budgetType === "EXPENSE" ? "Spent" : "Earned";
   const budgetTypeLabel =
     budget.budgetType === "EXPENSE" ? "Expense" : "Income";
@@ -90,7 +91,14 @@ const Budget = ({
               }}
             />
           </div>
-          <span className="dashboard-budget-card__progress-value">
+          <span
+            className="dashboard-budget-card__progress-value dashboard-budget-card__progress-value--badge"
+            style={{
+              color: progressColor,
+              borderColor: progressColor,
+              backgroundColor: `${progressColor}14`,
+            }}
+          >
             {formatPercentage(progress ?? 0)}
           </span>
         </div>
