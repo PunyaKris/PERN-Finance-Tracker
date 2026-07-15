@@ -39,6 +39,8 @@ const DashboardPage = () => {
     useState(false);
   const [idToDelete, setIdToDelete] = useState();
   const [showBudgetForm, setShowBudgetForm] = useState(false);
+  const [openRecentTransactionMenuId, setOpenRecentTransactionMenuId] =
+    useState(null);
 
   async function fetchDashboard() {
     setStatsError(false);
@@ -90,13 +92,27 @@ const DashboardPage = () => {
   async function transactionSaveHandler() {
     setShowModal(false);
     setPrevTransaction(null);
+    setOpenRecentTransactionMenuId(null);
     await fetchDashboard();
+  }
+
+  function onEditRecentTransactionPressed(transaction) {
+    setPrevTransaction(transaction);
+    setShowModal(true);
+    setOpenRecentTransactionMenuId(null);
+  }
+
+  function onDeleteRecentTransactionPressed(transactionId) {
+    setIdToDelete(transactionId);
+    setShowTransactionDeleteConfirm(true);
+    setOpenRecentTransactionMenuId(null);
   }
 
   async function onConfirmDeleteTransaction() {
     await deleteTransaction(idToDelete);
     setShowTransactionDeleteConfirm(false);
     setIdToDelete(null);
+    setOpenRecentTransactionMenuId(null);
     await fetchDashboard();
   }
 
@@ -181,7 +197,19 @@ const DashboardPage = () => {
     Transactions = (
       <div className="dashboard-page__list dashboard-page__list--stacked">
         {transactions.map((transaction) => (
-          <RecentTransaction key={transaction.id} transaction={transaction} />
+          <RecentTransaction
+            key={transaction.id}
+            transaction={transaction}
+            isMenuOpen={openRecentTransactionMenuId === transaction.id}
+            onMenuToggle={(menuId) =>
+              setOpenRecentTransactionMenuId((currentMenuId) =>
+                currentMenuId === menuId ? null : menuId,
+              )
+            }
+            onCloseMenu={() => setOpenRecentTransactionMenuId(null)}
+            onEditTransactionPressed={onEditRecentTransactionPressed}
+            onDeleteTransactionPressed={onDeleteRecentTransactionPressed}
+          />
         ))}
       </div>
     );

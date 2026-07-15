@@ -3,10 +3,11 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 7px 8px;
-  border-radius: 16px;
-  margin-bottom: 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 48%, transparent);
+  padding: 7px 7px 14px 7px;
+  border-radius: 2px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 25%, transparent);
+  cursor: pointer;
+  position: relative;
   transition:
     background 160ms ease,
     box-shadow 160ms ease,
@@ -35,8 +36,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 33px;
+  height: 33px;
   border-radius: 50%;
   background: var(--transaction-icon-bg, #5b82f7);
   border: none;
@@ -68,18 +69,27 @@
   align-items: center;
   gap: 15px;
   min-width: 0;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
 .recent-transaction__title {
   flex: 0 1 auto;
   min-width: 0;
-  color: color-mix(in srgb, var(--foreground) 87%, transparent);
+  color: color-mix(in srgb, var(--foreground) 84%, transparent);
   font-size: 0.88rem;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  translate: 0px 3px;
+  flex-shrink: 0;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 .recent-transaction__budget {
@@ -88,6 +98,11 @@
   line-height: 1.25;
   margin-left: -10px;
   font-weight: 350;
+  translate: 0px 2px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-family:
     Inter,
     -apple-system,
@@ -102,6 +117,7 @@
   margin-left: -10px;
   margin-right: -5px;
   font-weight: 700;
+  translate: 0px 3px;
   font-family:
     Inter,
     -apple-system,
@@ -116,6 +132,7 @@
   line-height: 1.25;
   opacity: 98%;
   margin-top: -0.5px;
+  translate: 0px -3px;
   font-family:
     Inter,
     -apple-system,
@@ -124,44 +141,13 @@
     sans-serif;
 }
 
-/* .recent-transaction__badge {
-  display: inline-flex;
+.recent-transaction__amount-control {
+  position: relative;
+  display: flex;
   align-items: center;
-
-  padding: 3px 10px;
-
-  border-radius: 4px;
-
-  border: 1px solid var(--accent-badge-border);
-
-  background: var(--accent-badge-bg);
-
-  color: var(--accent-badge-text);
-
-  font-size: 10px;
-  font-weight: 300;
-  line-height: 1.2;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  transition:
-    background 140ms ease,
-    border-color 140ms ease,
-    color 140ms ease;
+  gap: 8px;
+  flex-shrink: 0;
 }
-
-.recent-transaction__badge--clickable {
-  cursor: pointer;
-}
-
-.recent-transaction__badge--clickable:hover,
-.recent-transaction__badge--clickable:focus-visible {
-  background: color-mix(in srgb, var(--accent-icon-bg) 38%, var(--card));
-  color: var(--foreground);
-  outline: none;
-} */
 
 .recent-transaction__amount {
   display: flex;
@@ -173,6 +159,7 @@
   font-weight: 350;
   white-space: nowrap;
   letter-spacing: -0.01em;
+  translate: 16px;
   font-family:
     Inter,
     -apple-system,
@@ -195,6 +182,75 @@
 
 .recent-transaction__amount-value {
   font-variant-numeric: tabular-nums;
+}
+
+.recent-transaction__overflow-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  translate: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 8.5px;
+  border: none;
+  background: transparent;
+  color: color-mix(in srgb, var(--muted-foreground) 92%, transparent);
+  padding: 0;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+.recent-transaction__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 136px;
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--border) 62%, transparent);
+  background: var(--popover);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+  z-index: 10;
+}
+
+.recent-transaction__menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--popover-foreground);
+  padding: 8px 10px;
+  font-size: 0.74rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.recent-transaction__menu-item:hover,
+.recent-transaction__menu-item:focus-visible {
+  background: color-mix(in srgb, var(--surface-hover) 70%, transparent);
+  outline: none;
+}
+
+.recent-transaction__menu-item--danger {
+  color: #d97b83;
 }
 
 .dashboard-page__section-heading {

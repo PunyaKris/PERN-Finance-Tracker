@@ -1,7 +1,12 @@
+import { useEffect, useRef } from "react";
+import {
+  DotsThreeVertical,
+  PencilSimple,
+  TrashSimple,
+} from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 import { formatCurrency, formatDateTime } from "../utils/formatters";
 import { iconRegistry } from "../utils/iconRegistry";
-import { getAccentStyleVars } from "../utils/accentRegistry";
 import "./RecentTransaction.css";
 
 const TRANSACTION_ICON_PALETTE = {
@@ -38,28 +43,101 @@ const getTransactionIconStyle = (accentName) => {
   };
 };
 
-const RecentTransaction = ({ transaction }) => {
+const RecentTransaction = ({
+  transaction,
+  isMenuOpen,
+  onMenuToggle,
+  onCloseMenu,
+  onEditTransactionPressed,
+  onDeleteTransactionPressed,
+}) => {
   const navigate = useNavigate();
+  const menuRef = useRef(null);
+  const overflowButtonRef = useRef(null);
   const Icon = iconRegistry[transaction.icon]?.icon;
   const accentStyle = getTransactionIconStyle(transaction?.accentColor);
-  // const badgeStyle = getAccentStyleVars(transaction?.budget?.accentColor);
   const amountClassName =
     transaction.type == "EXPENSE"
       ? "recent-transaction__amount recent-transaction__amount--expense"
       : "recent-transaction__amount recent-transaction__amount--income";
 
-  // const categoryLabel = transaction.budget?.name || "Unassigned";
+  const handleRowNavigate = () => {
+    if (transaction.budgetId) {
+      navigate(`/budget/${transaction.budgetId}`);
+      return;
+    }
 
-  // const handleBadgeClick = () => {
-  //   if (transaction.budgetId) {
-  //     navigate(`/budget/${transaction.budgetId}`);
-  //   } else {
-  //     navigate("/unconsideredTransaction");
-  //   }
-  // };
+    navigate("/unconsideredTransaction");
+  };
+
+  const handleRowClick = () => {
+    handleRowNavigate();
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleRowNavigate();
+    }
+  };
+
+  const handleOverflowButtonClick = (event) => {
+    event.stopPropagation();
+    onMenuToggle?.(isMenuOpen ? null : transaction.id);
+  };
+
+  const handleEditClick = (event) => {
+    event.stopPropagation();
+    onCloseMenu?.();
+    onEditTransactionPressed?.(transaction);
+  };
+
+  const handleDeleteClick = (event) => {
+    event.stopPropagation();
+    onCloseMenu?.();
+    onDeleteTransactionPressed?.(transaction.id);
+  };
+
+  useEffect(() => {
+    if (!isMenuOpen) {
+      return undefined;
+    }
+
+    const handlePointerDown = (event) => {
+      const clickedInsideMenu = menuRef.current?.contains(event.target);
+      const clickedInsideButton = overflowButtonRef.current?.contains(
+        event.target,
+      );
+
+      if (!clickedInsideMenu && !clickedInsideButton) {
+        onCloseMenu?.();
+      }
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        onCloseMenu?.();
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isMenuOpen, onCloseMenu]);
 
   return (
-    <div className="recent-transaction" role="listitem">
+    <div
+      className="recent-transaction"
+      role="listitem"
+      onClick={handleRowClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+    >
       <div className="recent-transaction__left">
         <div
           className="recent-transaction__icon"
@@ -82,21 +160,6 @@ const RecentTransaction = ({ transaction }) => {
             <span className="recent-transaction__budget">
               {transaction.budget?.name || "Unassigned"}
             </span>
-            {/* <span
-              className="recent-transaction__badge recent-transaction__badge--clickable"
-              style={badgeStyle}
-              onClick={handleBadgeClick}
-              role="link"
-              tabIndex={0}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  handleBadgeClick();
-                }
-              }}
-            >
-              {categoryLabel}
-            </span> */}
           </div>
           <span className="recent-transaction__date">
             {formatDateTime(transaction.transactionDate)}
@@ -104,13 +167,48 @@ const RecentTransaction = ({ transaction }) => {
         </div>
       </div>
 
-      <div className={amountClassName} aria-hidden="true">
-        <span className="recent-transaction__amount-sign">
-          {transaction.type == "EXPENSE" ? "-" : "+"}
-        </span>
-        <span className="recent-transaction__amount-value">
-          {formatCurrency(transaction.amount)}
-        </span>
+      <div className="recent-transaction__amount-control">
+        <div className={amountClassName} aria-hidden="true">
+          <span className="recent-transaction__amount-sign">
+            {transaction.type == "EXPENSE" ? "-" : "+"}
+          </span>
+          <span className="recent-transaction__amount-value">
+            {formatCurrency(transaction.amount)}
+          </span>
+        </div>
+
+        <button
+          ref={overflowButtonRef}
+          type="button"
+          className="recent-transaction__overflow-button"
+          aria-label="More transaction actions"
+          aria-haspopup="menu"
+          aria-expanded={isMenuOpen}
+          onClick={handleOverflowButtonClick}
+        >
+          <DotsThreeVertical size={18} />
+        </button>
+
+        {isMenuOpen && (
+          <div className="recent-transaction__menu" ref={menuRef} role="menu">
+            <button
+              type="button"
+              className="recent-transaction__menu-item"
+              onClick={handleEditClick}
+            >
+              <PencilSimple size={14} />
+              <span>Edit</span>
+            </button>
+            <button
+              type="button"
+              className="recent-transaction__menu-item recent-transaction__menu-item--danger"
+              onClick={handleDeleteClick}
+            >
+              <TrashSimple size={14} />
+              <span>Delete</span>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
