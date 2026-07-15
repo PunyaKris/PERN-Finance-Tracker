@@ -42,21 +42,21 @@ const RecentTransaction = ({ transaction }) => {
   const navigate = useNavigate();
   const Icon = iconRegistry[transaction.icon]?.icon;
   const accentStyle = getTransactionIconStyle(transaction?.accentColor);
-  const badgeStyle = getAccentStyleVars(transaction?.budget?.accentColor);
+  // const badgeStyle = getAccentStyleVars(transaction?.budget?.accentColor);
   const amountClassName =
     transaction.type == "EXPENSE"
       ? "recent-transaction__amount recent-transaction__amount--expense"
       : "recent-transaction__amount recent-transaction__amount--income";
 
-  const categoryLabel = transaction.budget?.name || "Unassigned";
+  // const categoryLabel = transaction.budget?.name || "Unassigned";
 
-  const handleBadgeClick = () => {
-    if (transaction.budgetId) {
-      navigate(`/budget/${transaction.budgetId}`);
-    } else {
-      navigate("/unconsideredTransaction");
-    }
-  };
+  // const handleBadgeClick = () => {
+  //   if (transaction.budgetId) {
+  //     navigate(`/budget/${transaction.budgetId}`);
+  //   } else {
+  //     navigate("/unconsideredTransaction");
+  //   }
+  // };
 
   return (
     <div className="recent-transaction" role="listitem">
@@ -76,9 +76,13 @@ const RecentTransaction = ({ transaction }) => {
         <div className="recent-transaction__content">
           <div className="recent-transaction__meta">
             <span className="recent-transaction__title">
-              {transaction.title}
+              {transaction.title}{" "}
             </span>
-            <span
+            <span className="recent-transaction__bullet"> •</span>
+            <span className="recent-transaction__budget">
+              {transaction.budget?.name || "Unassigned"}
+            </span>
+            {/* <span
               className="recent-transaction__badge recent-transaction__badge--clickable"
               style={badgeStyle}
               onClick={handleBadgeClick}
@@ -92,7 +96,7 @@ const RecentTransaction = ({ transaction }) => {
               }}
             >
               {categoryLabel}
-            </span>
+            </span> */}
           </div>
           <span className="recent-transaction__date">
             {formatDateTime(transaction.transactionDate)}

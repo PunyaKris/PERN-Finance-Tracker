@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 8px;
+  padding: 7px 8px;
   border-radius: 16px;
   margin-bottom: 0;
   border-bottom: 1px solid color-mix(in srgb, var(--border) 48%, transparent);
@@ -35,8 +35,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: var(--transaction-icon-bg, #5b82f7);
   border: none;
@@ -57,7 +57,7 @@
 .recent-transaction__content {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 9px;
   min-width: 0;
   flex: 1 1 auto;
 }
@@ -74,21 +74,57 @@
 .recent-transaction__title {
   flex: 0 1 auto;
   min-width: 0;
-  color: var(--foreground);
-  font-size: 0.9rem;
-  font-weight: 800;
+  color: color-mix(in srgb, var(--foreground) 87%, transparent);
+  font-size: 0.88rem;
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.recent-transaction__date {
-  font-size: 0.71rem;
-  color: var(--muted-foreground);
-  line-height: 1.2;
+.recent-transaction__budget {
+  font-size: 0.69rem;
+  color: color-mix(in srgb, var(--muted-foreground) 85%, transparent);
+  line-height: 1.25;
+  margin-left: -10px;
+  font-weight: 350;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+.recent-transaction__bullet {
+  font-size: 0.72rem;
+  color: color-mix(in srgb, var(--muted-foreground) 90%, transparent);
+  line-height: 1.25;
+  margin-left: -10px;
+  margin-right: -5px;
+  font-weight: 700;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
-.recent-transaction__badge {
+.recent-transaction__date {
+  font-size: 0.69rem;
+  color: color-mix(in srgb, var(--muted-foreground) 82%, transparent);
+  line-height: 1.25;
+  opacity: 98%;
+  margin-top: -0.5px;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+/* .recent-transaction__badge {
   display: inline-flex;
   align-items: center;
 
@@ -125,7 +161,7 @@
   background: color-mix(in srgb, var(--accent-icon-bg) 38%, var(--card));
   color: var(--foreground);
   outline: none;
-}
+} */
 
 .recent-transaction__amount {
   display: flex;
@@ -133,22 +169,28 @@
   gap: 4px;
   flex-shrink: 0;
   margin-left: 8px;
-  font-size: 0.92rem;
-  font-weight: 750;
+  font-size: 0.9rem;
+  font-weight: 350;
   white-space: nowrap;
   letter-spacing: -0.01em;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 .recent-transaction__amount--expense {
-  color: var(--destructive);
+  color: #d97b83;
 }
 
 .recent-transaction__amount--income {
-  color: #16a34a;
+  color: #79b984;
 }
 
 .recent-transaction__amount-sign {
-  font-weight: 900;
+  font-weight: 450;
 }
 
 .recent-transaction__amount-value {
@@ -160,14 +202,16 @@
   padding-bottom: 7px;
 }
 
-.dashboard-page__section-title {
-  font-size: 0.98rem;
-  font-weight: 760;
-}
+/* .dashboard-page__section-title {
+  font-size: 0.96rem;
+  font-weight: 650;
+  color: #edf2fb;
+} */
 
 .dashboard-page__section-copy {
   font-size: 0.72rem;
-  font-weight: 500;
+  font-weight: 450;
+  color: color-mix(in srgb, var(--muted-foreground) 90%, transparent);
 }
 
 @media (max-width: 480px) {
