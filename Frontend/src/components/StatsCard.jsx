@@ -5,6 +5,7 @@ import "./StatsCard.css";
 
 const StatsCard = ({
   title,
+  subtitle,
   progress,
   headerIcon,
   children,
@@ -76,7 +77,39 @@ const StatsCard = ({
             return "stats-card__header-icon--year";
           return "";
         })()
+      : variant === "budget"
+        ? (() => {
+            const normalizedTitle = (title || "").toLowerCase();
+            if (normalizedTitle.includes("today"))
+              return "stats-card__header-icon--today";
+            if (normalizedTitle.includes("week"))
+              return "stats-card__header-icon--month";
+            if (normalizedTitle.includes("month"))
+              return "stats-card__header-icon--year";
+            return "";
+          })()
+        : "";
+
+  const budgetDateTone =
+    variant === "budget"
+      ? (() => {
+          const normalizedTitle = (title || "").toLowerCase();
+          if (normalizedTitle.includes("today")) return "today";
+          if (normalizedTitle.includes("week")) return "month";
+          if (normalizedTitle.includes("month")) return "year";
+          return "";
+        })()
       : "";
+
+  const dateAccentClass = budgetDateTone
+    ? `stats-card__date-icon--${budgetDateTone}`
+    : "";
+  const dateTextClass = budgetDateTone
+    ? `stats-card__date-text--${budgetDateTone}`
+    : "";
+  const datePillClass = budgetDateTone
+    ? `stats-card__date-pill--${budgetDateTone}`
+    : "";
 
   const renderDashboardLayout = () => {
     const dashboardSlots = [0, 1, 2, 3].map((index) => {
@@ -148,18 +181,31 @@ const StatsCard = ({
       className={`stats-card ${variant === "budget" ? "stats-card--budget" : "stats-card--dashboard"}`}
     >
       <header className="stats-card__header">
-        {title && <h3 className="stats-card__title">{title}</h3>}
+        <div className="stats-card__header-copy">
+          {title && <h3 className="stats-card__title">{title}</h3>}
+        </div>
 
-        {headerIcon ? (
+        {variant === "budget" && subtitle ? (
+          <div
+            className={`stats-card__date-pill ${datePillClass}`.trim()}
+            aria-label={subtitle}
+          >
+            <span
+              className={`stats-card__date-icon ${dateAccentClass}`.trim()}
+              aria-hidden="true"
+            >
+              <Calendar size={14} strokeWidth={2.2} />
+            </span>
+            <span className={`stats-card__date-text ${dateTextClass}`.trim()}>
+              {subtitle}
+            </span>
+          </div>
+        ) : headerIcon ? (
           <span
             className={`stats-card__header-icon ${dashboardAccentClass}`.trim()}
             aria-hidden="true"
           >
             {headerIcon}
-          </span>
-        ) : variant === "budget" ? (
-          <span className="stats-card__header-icon" aria-hidden="true">
-            <Calendar size={18} />
           </span>
         ) : null}
       </header>

@@ -158,23 +158,128 @@
 }
 
 .stats-card--budget {
-  padding: 18px 18px 16px;
+  padding: 14px 14px 12px;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 .stats-card--budget .stats-card__header {
-  margin-bottom: 14px;
+  margin-top: 0;
+  margin-bottom: 8px;
+  gap: 10px;
+}
+
+.stats-card--budget .stats-card__header-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.stats-card--budget .stats-card__title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--foreground) 87%, transparent);
+}
+
+.stats-card__date-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: color-mix(in srgb, var(--surface-muted) 82%, transparent);
+  box-sizing: border-box;
+}
+
+.stats-card__date-pill--today {
+  border-color: color-mix(in srgb, #5b8cff 26%, var(--border));
+  background: color-mix(in srgb, #5b8cff 12%, var(--surface-muted));
+}
+
+.stats-card__date-pill--month {
+  border-color: color-mix(in srgb, #8d7cf2 24%, var(--border));
+  background: color-mix(in srgb, #8d7cf2 12%, var(--surface-muted));
+}
+
+.stats-card__date-pill--year {
+  border-color: color-mix(in srgb, #6fc58b 24%, var(--border));
+  background: color-mix(in srgb, #6fc58b 12%, var(--surface-muted));
+}
+
+.stats-card__date-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  border: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+}
+
+.stats-card__date-text {
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.stats-card__date-icon--today,
+.stats-card__date-text--today {
+  color: #5b8cff;
+}
+
+.stats-card__date-icon--month,
+.stats-card__date-text--month {
+  color: #8d7cf2;
+}
+
+.stats-card__date-icon--year,
+.stats-card__date-text--year {
+  color: #6fc58b;
 }
 
 .stats-card--budget .stats-card__budget-body {
-  gap: 12px;
+  gap: 8px;
 }
 
 .stats-card--budget .stats-card__budget-secondary {
-  gap: 10px 14px;
+  gap: 8px 14px;
+}
+
+.stats-card--budget .stats-card__metric {
+  gap: 2px;
+  padding: 4px 0;
+}
+
+.stats-card--budget .stats-card__metric-label {
+  font-size: 0.8rem;
+  font-weight: 300;
+  line-height: 1.3;
+  color: var(--muted-foreground);
+}
+
+.stats-card--budget .stats-card__metric-value {
+  translate: 3px;
+  font-size: 0.9rem;
+  font-weight: 450;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
 .stats-card--budget .stats-card__progress-row {
-  margin-top: 14px;
+  gap: 8px;
+  margin-top: 5px;
 }
 
 .stats-card__header {
@@ -183,6 +288,7 @@
   justify-content: space-between;
   gap: 14px;
   margin-bottom: 20px;
+  padding-inline: 7px;
 }
 
 .stats-card--dashboard .stats-card__header {
@@ -277,30 +383,36 @@
 .stats-card__budget-body {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
 .stats-card__budget-primary {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--surface-muted);
+  margin-top: -9px;
+  gap: 3px;
+  margin-top: 5px;
+  padding-bottom: 9px;
+  margin-bottom: 3px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+  padding-inline: 7px;
 }
 
 .stats-card__budget-primary-label {
-  font-size: 0.79rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 300;
+  line-height: 1.3;
   color: var(--muted-foreground);
 }
 
 .stats-card__budget-primary-value {
-  font-size: 1.52rem;
-  font-weight: 800;
+  translate: 3px;
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.3;
+  margin-bottom: 5px;
+  letter-spacing: -0.015em;
   color: var(--foreground);
-  letter-spacing: -0.02em;
 }
 
 .stats-card__budget-primary-value--earned {
@@ -330,7 +442,8 @@
 .stats-card__budget-secondary {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px 14px;
+  gap: 10px 23px;
+  padding-inline: 7px;
 }
 
 .stats-card__progress-row {
@@ -344,9 +457,9 @@
 .stats-card__progress {
   flex: 1 1 auto;
   width: 100%;
-  height: 7px;
-  background: color-mix(in srgb, var(--surface-muted) 82%, transparent);
-  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  height: 6px;
+  background: color-mix(in srgb, var(--surface-muted) 90%, var(--border) 10%);
+  border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
   border-radius: 999px;
   overflow: hidden;
   box-sizing: border-box;

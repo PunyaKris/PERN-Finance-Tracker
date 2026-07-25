@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Settings, Funnel, ArrowUpDown } from "lucide-react";
+import { Plus } from "@phosphor-icons/react";
 import AppLayout from "../components/AppLayout";
 
 import { deleteBudget, getBudget } from "../services/budgetService";
@@ -154,15 +155,30 @@ const BudgetPage = () => {
   const budgetTypeLabel =
     budget.budgetType === "EXPENSE" ? "Expense" : "Income";
 
+  const formatCardDate = (date) =>
+    new Intl.DateTimeFormat("en", {
+      month: "short",
+      day: "numeric",
+    }).format(date);
+
+  const todayDate = new Date();
+  const weekStart = new Date(todayDate);
+  weekStart.setDate(todayDate.getDate() - todayDate.getDay());
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekStart.getDate() + 6);
+  const monthStart = new Date(todayDate.getFullYear(), todayDate.getMonth(), 1);
+  const monthEnd = new Date(
+    todayDate.getFullYear(),
+    todayDate.getMonth() + 1,
+    0,
+  );
+
+  const todaySubtitle = formatCardDate(todayDate);
+  const weekSubtitle = `${formatCardDate(weekStart)} – ${formatCardDate(weekEnd)}`;
+  const monthSubtitle = `${formatCardDate(monthStart)} – ${formatCardDate(monthEnd)}`;
+
   BudgetInfo = (
     <div className="budget-page__top-area">
-      <button
-        className="budget-page__back-link"
-        onClick={() => navigate("/dashboard")}
-      >
-        ← Back to Dashboard
-      </button>
-
       <header className="budget-page__header">
         <div className="budget-page__title-group">
           {Icon && (
@@ -171,7 +187,7 @@ const BudgetPage = () => {
               aria-hidden="true"
               style={accentStyle}
             >
-              <Icon size={24} />
+              <Icon size={21} />
             </span>
           )}
 
@@ -193,8 +209,17 @@ const BudgetPage = () => {
         </div>
 
         <div className="budget-page__actions" ref={actionMenuRef}>
-          <button type="button" onClick={() => setShowTransactionForm(true)}>
-            ➕ Add Transaction
+          <button
+            type="button"
+            className="budget-page__add-transaction-button"
+            onClick={() => setShowTransactionForm(true)}
+          >
+            <Plus
+              size={18}
+              weight="bold"
+              className="budget-page__action-icon"
+            />
+            <span>Add Transaction</span>
           </button>
           <div className="budget-page__action-menu-wrap">
             <button
@@ -274,6 +299,7 @@ const BudgetPage = () => {
             <TransactionRow
               key={transaction.id}
               transaction={transaction}
+              dailyLimit={budget.daily.limit}
               showBudget={false}
               onEditTransactionPressed={handleEditTransactionPress}
               onDeleteTransactionPressed={onDeleteTransactionPressed}
@@ -304,12 +330,11 @@ const BudgetPage = () => {
           <StatsCard
             variant="budget"
             title="Today"
+            subtitle={todaySubtitle}
             progress={getSafeProgress(budget.daily.amount, budget.daily.limit)}
           >
             <Stat
-              title={
-                budget.budgetType === "EXPENSE" ? "Spent Today" : "Earned Today"
-              }
+              title={budget.budgetType === "EXPENSE" ? "Spent" : "Earned"}
               value={budget.daily.amount}
             />
 
@@ -320,15 +345,14 @@ const BudgetPage = () => {
           <StatsCard
             variant="budget"
             title="Week"
+            subtitle={weekSubtitle}
             progress={getSafeProgress(
               budget.weekly.amount,
               budget.weekly.limit,
             )}
           >
             <Stat
-              title={
-                budget.budgetType === "EXPENSE" ? "Spent Week" : "Earned Week"
-              }
+              title={budget.budgetType === "EXPENSE" ? "Spent" : "Earned"}
               value={budget.weekly.amount}
             />
 
@@ -339,15 +363,14 @@ const BudgetPage = () => {
           <StatsCard
             variant="budget"
             title="Month"
+            subtitle={monthSubtitle}
             progress={getSafeProgress(
               budget.monthly.amount,
               budget.monthly.limit,
             )}
           >
             <Stat
-              title={
-                budget.budgetType === "EXPENSE" ? "Spent Month" : "Earned Month"
-              }
+              title={budget.budgetType === "EXPENSE" ? "Spent" : "Earned"}
               value={budget.monthly.amount}
             />
 

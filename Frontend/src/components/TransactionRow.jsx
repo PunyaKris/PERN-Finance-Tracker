@@ -1,4 +1,9 @@
-import { Pencil, Trash2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  DotsThreeVertical,
+  PencilSimple,
+  TrashSimple,
+} from "@phosphor-icons/react";
 import { formatCurrency, formatDateTime } from "../utils/formatters";
 import { iconRegistry } from "../utils/iconRegistry";
 import "./TransactionRow.css";
@@ -39,10 +44,13 @@ const getTransactionIconStyle = (accentName) => {
 
 const TransactionRow = ({
   transaction,
-  showBudget,
+  dailyLimit,
   onEditTransactionPressed,
   onDeleteTransactionPressed,
 }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+  const overflowButtonRef = useRef(null);
   const Icon = iconRegistry[transaction.icon]?.icon;
   const accentStyle = getTransactionIconStyle(transaction?.accentColor);
   const amountClassName =
@@ -50,49 +58,103 @@ const TransactionRow = ({
       ? "transaction-row__amount transaction-row__amount--expense"
       : "transaction-row__amount transaction-row__amount--income";
 
-  const handleEditClick = () => {
+  const limit = Number(transaction.budget?.monthlyLimit ?? dailyLimit);
+  const amount = Number(transaction.amount);
+  const usagePercent =
+    Number.isFinite(limit) && limit > 0 && Number.isFinite(amount)
+      ? Math.round((amount / limit) * 100)
+      : null;
+  const usageLabel =
+    usagePercent != null && usagePercent >= 0 ? `${usagePercent}% Used` : null;
+
+  const usageToneClass =
+    usageLabel == null
+      ? ""
+      : usagePercent > 80
+        ? "transaction-row__usage-badge--red"
+        : usagePercent > 60
+          ? "transaction-row__usage-badge--orange"
+          : usagePercent > 30
+            ? "transaction-row__usage-badge--blue"
+            : "transaction-row__usage-badge--green";
+
+  const handleOverflowButtonClick = (event) => {
+    event.stopPropagation();
+    setIsMenuOpen((current) => !current);
+  };
+
+  const handleEditClick = (event) => {
+    event.stopPropagation();
+    setIsMenuOpen(false);
     onEditTransactionPressed?.(transaction);
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = (event) => {
+    event.stopPropagation();
+    setIsMenuOpen(false);
     onDeleteTransactionPressed?.(transaction.id);
   };
 
+  useEffect(() => {
+    if (!isMenuOpen) {
+      return undefined;
+    }
+
+    const handlePointerDown = (event) => {
+      const clickedInsideMenu = menuRef.current?.contains(event.target);
+      const clickedInsideButton = overflowButtonRef.current?.contains(
+        event.target,
+      );
+
+      if (!clickedInsideMenu && !clickedInsideButton) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isMenuOpen]);
+
   return (
     <div className="transaction-row">
-      {/* Left Section: Icon + Content */}
-      <div className="transaction-row__main">
-        <div
-          className="transaction-row__icon"
-          aria-hidden="true"
-          style={accentStyle}
-        >
-          {Icon ? (
-            <Icon size={18} />
-          ) : (
-            <span className="transaction-row__icon-fallback">•</span>
-          )}
-        </div>
-
-        <div className="transaction-row__content">
-          {/* Header Row: Title, Badge, and Date on same line */}
-          <div className="transaction-row__header">
-            <span className="transaction-row__title">{transaction.title}</span>
-            {showBudget && (
-              <span className="transaction-row__badge">
-                {transaction.budgetId
-                  ? transaction.budget.name
-                  : "Un-Considered Transaction"}
-              </span>
-            )}
-          </div>
-
-          {/* Optional Transaction Note */}
-          {transaction.note && (
-            <span className="transaction-row__note">{transaction.note}</span>
-          )}
-        </div>
+      <div
+        className="transaction-row__icon"
+        aria-hidden="true"
+        style={accentStyle}
+      >
+        {Icon ? (
+          <Icon size={18} />
+        ) : (
+          <span className="transaction-row__icon-fallback">•</span>
+        )}
       </div>
+
+      <div className="transaction-row__title-block">
+        <span className="transaction-row__title">{transaction.title}</span>
+        {transaction.note && (
+          <span className="transaction-row__note">{transaction.note}</span>
+        )}
+      </div>
+
+      {usageLabel && (
+        <span
+          className={`transaction-row__usage-badge ${usageToneClass}`.trim()}
+        >
+          {usageLabel}
+        </span>
+      )}
+
       <span className="transaction-row__date">
         {formatDateTime(transaction.transactionDate)}
       </span>
@@ -107,21 +169,39 @@ const TransactionRow = ({
 
       <div className="transaction-row__actions">
         <button
+          ref={overflowButtonRef}
           type="button"
-          className="transaction-row__action-button transaction-row__action-button--edit"
-          aria-label="Edit transaction"
-          onClick={handleEditClick}
+          className="transaction-row__overflow-button"
+          aria-label="More transaction actions"
+          aria-haspopup="menu"
+          aria-expanded={isMenuOpen}
+          onClick={handleOverflowButtonClick}
         >
-          <Pencil size={17} />
+          <DotsThreeVertical size={18} />
         </button>
-        <button
-          type="button"
-          className="transaction-row__action-button transaction-row__action-button--delete"
-          aria-label="Delete transaction"
-          onClick={handleDeleteClick}
-        >
-          <Trash2 size={17} />
-        </button>
+
+        {isMenuOpen && (
+          <div className="transaction-row__menu" ref={menuRef} role="menu">
+            <button
+              type="button"
+              className="transaction-row__menu-item"
+              onClick={handleEditClick}
+              role="menuitem"
+            >
+              <PencilSimple size={14} />
+              <span>Edit</span>
+            </button>
+            <button
+              type="button"
+              className="transaction-row__menu-item transaction-row__menu-item--danger"
+              onClick={handleDeleteClick}
+              role="menuitem"
+            >
+              <TrashSimple size={14} />
+              <span>Delete</span>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
