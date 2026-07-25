@@ -299,7 +299,7 @@ const BudgetPage = () => {
             <TransactionRow
               key={transaction.id}
               transaction={transaction}
-              dailyLimit={budget.daily.limit}
+              monthlyLimit={budget.monthly?.limit ?? budget.monthlyLimit ?? null}
               showBudget={false}
               onEditTransactionPressed={handleEditTransactionPress}
               onDeleteTransactionPressed={onDeleteTransactionPressed}

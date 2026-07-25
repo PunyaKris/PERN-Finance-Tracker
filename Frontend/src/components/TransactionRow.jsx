@@ -44,7 +44,7 @@ const getTransactionIconStyle = (accentName) => {
 
 const TransactionRow = ({
   transaction,
-  dailyLimit,
+  monthlyLimit,
   onEditTransactionPressed,
   onDeleteTransactionPressed,
 }) => {
@@ -58,14 +58,18 @@ const TransactionRow = ({
       ? "transaction-row__amount transaction-row__amount--expense"
       : "transaction-row__amount transaction-row__amount--income";
 
-  const limit = Number(transaction.budget?.monthlyLimit ?? dailyLimit);
+  const limit = Number(transaction.budget?.monthlyLimit ?? monthlyLimit);
   const amount = Number(transaction.amount);
   const usagePercent =
-    Number.isFinite(limit) && limit > 0 && Number.isFinite(amount)
+    Number.isFinite(limit) &&
+    limit > 0 &&
+    Number.isFinite(amount)
       ? Math.round((amount / limit) * 100)
       : null;
   const usageLabel =
-    usagePercent != null && usagePercent >= 0 ? `${usagePercent}% Used` : null;
+    usagePercent != null && usagePercent >= 0
+      ? `${usagePercent}% Monthly Limit Used`
+      : null;
 
   const usageToneClass =
     usageLabel == null
