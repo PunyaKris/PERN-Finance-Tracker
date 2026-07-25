@@ -295,11 +295,14 @@ const BudgetPage = () => {
           </div>
         </div>
         <div className="budget-page__transactions-list">
-          {transactions.map((transaction) => (
+          {transactions.map((transaction, index) => (
             <TransactionRow
               key={transaction.id}
               transaction={transaction}
-              monthlyLimit={budget.monthly?.limit ?? budget.monthlyLimit ?? null}
+              monthlyLimit={
+                budget.monthly?.limit ?? budget.monthlyLimit ?? null
+              }
+              index={index}
               showBudget={false}
               onEditTransactionPressed={handleEditTransactionPress}
               onDeleteTransactionPressed={onDeleteTransactionPressed}

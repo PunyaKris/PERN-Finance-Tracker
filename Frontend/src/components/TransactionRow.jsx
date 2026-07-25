@@ -42,6 +42,30 @@ const getTransactionIconStyle = (accentName) => {
   };
 };
 
+const getBadgeColorClass = (transaction) => {
+  const stableValue = String(
+    transaction?.id ?? transaction?.title ?? transaction?.transactionDate ?? "",
+  );
+
+  let hash = 0;
+  for (let index = 0; index < stableValue.length; index += 1) {
+    hash = (hash << 5) - hash + stableValue.charCodeAt(index);
+    hash |= 0;
+  }
+
+  const colorIndex = Math.abs(hash) % 3;
+
+  if (colorIndex === 1) {
+    return "transaction-row__usage-badge--yellow";
+  }
+
+  if (colorIndex === 2) {
+    return "transaction-row__usage-badge--blue";
+  }
+
+  return "transaction-row__usage-badge--green";
+};
+
 const TransactionRow = ({
   transaction,
   monthlyLimit,
@@ -61,26 +85,24 @@ const TransactionRow = ({
   const limit = Number(transaction.budget?.monthlyLimit ?? monthlyLimit);
   const amount = Number(transaction.amount);
   const usagePercent =
-    Number.isFinite(limit) &&
-    limit > 0 &&
-    Number.isFinite(amount)
-      ? Math.round((amount / limit) * 100)
-      : null;
-  const usageLabel =
-    usagePercent != null && usagePercent >= 0
-      ? `${usagePercent}% Monthly Limit Used`
+    Number.isFinite(limit) && limit > 0 && Number.isFinite(amount)
+      ? (amount / limit) * 100
       : null;
 
-  const usageToneClass =
-    usageLabel == null
-      ? ""
-      : usagePercent > 80
-        ? "transaction-row__usage-badge--red"
-        : usagePercent > 60
-          ? "transaction-row__usage-badge--orange"
-          : usagePercent > 30
-            ? "transaction-row__usage-badge--blue"
-            : "transaction-row__usage-badge--green";
+  const usagePercentText =
+    usagePercent == null
+      ? null
+      : Number.isInteger(usagePercent)
+        ? `${usagePercent}%`
+        : `${usagePercent.toFixed(1)}%`;
+
+  const usageLabel =
+    usagePercentText != null && usagePercent >= 0
+      ? `${usagePercentText} Monthly Used`
+      : null;
+
+  const badgeColorClass = getBadgeColorClass(transaction);
+  const usageToneClass = usageLabel == null ? "" : badgeColorClass;
 
   const handleOverflowButtonClick = (event) => {
     event.stopPropagation();
