@@ -1,10 +1,11 @@
+import { GripVertical } from "lucide-react";
 import { useDraggable } from "@dnd-kit/core";
 import { formatCurrency, formatDateTime } from "../utils/formatters";
 import { iconRegistry } from "../utils/iconRegistry";
 import { getAccentStyleVars } from "../utils/accentRegistry";
 import "./InboxTransactionCard.css";
 
-const InboxTransactionCard = ({ transaction, isActiveDrag }) => {
+const InboxTransactionCard = ({ transaction }) => {
   const Icon = iconRegistry[transaction.icon]?.icon;
   const accentStyle = getAccentStyleVars(transaction?.accentColor);
   const isExpense = transaction.type === "EXPENSE";
@@ -31,6 +32,10 @@ const InboxTransactionCard = ({ transaction, isActiveDrag }) => {
       {...listeners}
       {...attributes}
     >
+      <div className="inbox-transaction-card__handle" aria-hidden="true">
+        <GripVertical size={16} />
+      </div>
+
       <div className="inbox-transaction-card__left">
         <div
           className="inbox-transaction-card__icon"

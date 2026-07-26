@@ -342,9 +342,9 @@ function UnassignedTransaction() {
           <section className="unconsidered-transactions-page__workspace">
             <div className="unconsidered-transactions-page__panel">
               <div className="unconsidered-transactions-page__panel-header">
-                <h2 className="unconsidered-transactions-page__panel-title">
-                  Transactions Inbox
-                </h2>
+                <h6 className="unconsidered-transactions-page__panel-title">
+                  Transactions Inbox ({transactions.length})
+                </h6>
                 <p className="unconsidered-transactions-page__panel-subtitle">
                   Drag a transaction onto a budget to organize it.
                 </p>

@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   padding: 14px 16px;
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -20,11 +20,39 @@
   box-shadow: 0 16px 36px rgba(15, 23, 42, 0.16);
 }
 
+.inbox-transaction-card__handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 100%;
+  margin-left: -4px;
+  color: color-mix(in srgb, var(--muted-foreground) 48%, transparent);
+  opacity: 0.7;
+  transition:
+    opacity 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+  flex-shrink: 0;
+}
+
+.inbox-transaction-card:hover .inbox-transaction-card__handle {
+  opacity: 1;
+  color: color-mix(in srgb, var(--muted-foreground) 72%, transparent);
+  transform: translateX(1px);
+}
+
+.inbox-transaction-card__handle svg {
+  width: 16px;
+  height: 16px;
+}
+
 .inbox-transaction-card__left {
   display: flex;
   align-items: center;
   gap: 12px;
   min-width: 0;
+  margin-left: -80px;
 }
 
 .inbox-transaction-card__icon {
@@ -59,12 +87,18 @@
 }
 
 .inbox-transaction-card__title {
-  font-weight: 700;
+  font-weight: 400;
   color: var(--foreground);
   font-size: 1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 .inbox-transaction-card__subtitle {
@@ -72,7 +106,7 @@
   flex-direction: column;
   gap: 6px;
   color: var(--muted-foreground);
-  font-size: 0.88rem;
+  font-size: 0.8rem;
 }
 
 .inbox-transaction-card__note-row {
@@ -97,11 +131,11 @@
 }
 
 .inbox-transaction-card__amount--expense {
-  color: #dc2626;
+  color: #e17373;
 }
 
 .inbox-transaction-card__amount--income {
-  color: #059669;
+  color: #74be78;
 }
 
 .inbox-transaction-card__amount-sign {

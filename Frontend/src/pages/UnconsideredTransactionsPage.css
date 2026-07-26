@@ -1,7 +1,7 @@
 .unconsidered-transactions-page {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .unconsidered-transactions-page__back {
@@ -22,16 +22,17 @@
 .unconsidered-transactions-page__top-area {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: -8px;
+  gap: 8px;
+  margin-top: 0;
 }
 
 .unconsidered-transactions-page__header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 20px;
-  padding: 0 0 0 0;
+  gap: 16px;
+  padding: 0;
+  margin-bottom: 4px;
   border: none;
   border-radius: 0;
   background: transparent;
@@ -42,25 +43,31 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  padding: 18px 22px;
-  border-radius: 20px;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 16px;
   background: var(--card);
   border: 1px solid var(--border);
-  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 .unconsidered-transactions-page__summary-copy {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   min-width: 0;
 }
 
 .unconsidered-transactions-page__summary-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 12px;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -84,38 +91,47 @@
 
 .unconsidered-transactions-page__summary-title {
   margin: 0;
-  font-size: 1rem;
-  font-weight: 800;
+  font-size: 0.96rem;
+  font-weight: 450;
   color: var(--foreground);
+  line-height: 1.2;
 }
 
 .unconsidered-transactions-page__summary-subtitle {
-  margin: 4px 0 0;
+  margin: 2px 0 0;
   color: var(--muted-foreground);
-  font-size: 0.92rem;
+  font-size: 0.7rem;
+  line-height: 1.35;
 }
 
 .unconsidered-transactions-page__summary-tip {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0px;
-  padding: 0px 15px 0px 0px;
-  border-radius: 18px;
-  background: color-mix(in srgb, var(--primary) 16%, var(--card));
-  border: 1px solid color-mix(in srgb, var(--primary) 24%, var(--border));
+  margin-top: 0px;
+  padding-left: 0px;
+  padding-right: 13px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+  border-radius: 35px;
+  background: color-mix(in srgb, var(--primary) 10%, var(--card));
+  border: 1.5px dashed color-mix(in srgb, var(--primary) 20%, var(--border));
+  color: var(--primary);
+  transform: scale(0.85, 0.8);
+  transform-origin: right center;
 }
 
 .unconsidered-transactions-page__summary-tip-text {
   margin: 0;
   color: var(--primary);
-  font-size: 0.96rem;
-  font-weight: 700;
+  font-size: 0.87rem;
+  font-weight: 500;
+  line-height: 1;
 }
 
 .unconsidered-transactions-page__title-group {
   display: flex;
-  align-items: center;
-  gap: 18px;
+  align-items: flex-start;
+  gap: 12px;
   flex: 1;
   min-width: 0;
 }
@@ -123,7 +139,8 @@
 .unconsidered-transactions-page__title-row {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
+  margin-bottom: 2px;
 }
 
 .unconsidered-transactions-page__title-block {
@@ -132,6 +149,12 @@
   justify-content: center;
   gap: 2px;
   min-width: 0;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 .unconsidered-transactions-page__actions {
@@ -140,8 +163,8 @@
   justify-content: flex-end;
   align-items: flex-start;
   align-self: flex-start;
-  gap: 12px;
-  margin-top: -12px;
+  gap: 10px;
+  margin-top: 0;
   position: relative;
 }
 
@@ -151,20 +174,22 @@
   gap: 8px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 10px 14px;
+  padding: 9px 12px;
   background: var(--card);
   color: var(--foreground);
-  font-size: 0.92rem;
-  font-weight: 700;
+  font-size: 0.84rem;
+  font-weight: 600;
   cursor: pointer;
   transition:
     border-color 180ms ease,
+    background-color 180ms ease,
     box-shadow 180ms ease,
     transform 180ms ease;
 }
 
 .unconsidered-transactions-page__undo-button:hover:not(:disabled) {
   border-color: var(--primary);
+  background: color-mix(in srgb, var(--card) 92%, var(--surface-hover));
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
   transform: translateY(-1px);
 }
@@ -190,17 +215,25 @@
 
 .unconsidered-transactions-page__title {
   margin: 0;
-  font-size: 1.45rem;
-  font-weight: 800;
-  color: var(--foreground);
+  font-size: clamp(1rem, 2vw, 1.32rem);
+  font-weight: 450;
+  color: color-mix(in srgb, var(--foreground) 87%, transparent);
   letter-spacing: -0.02em;
+  line-height: 1.16;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 .unconsidered-transactions-page__subtitle {
   margin: 0;
   color: var(--muted-foreground);
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 0.74rem;
+  font-weight: 500;
+  line-height: 1.35;
 }
 
 .unconsidered-transactions-page__workspace {
@@ -235,16 +268,28 @@
 .unconsidered-transactions-page__panel-title {
   margin: 0;
   font-size: 1.02rem;
-  font-weight: 800;
+  font-weight: 500;
   color: var(--foreground);
   letter-spacing: -0.01em;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 .unconsidered-transactions-page__panel-subtitle {
   margin: 0;
   color: var(--muted-foreground);
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   line-height: 1.45;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 .unconsidered-transactions-page__panel-body {
