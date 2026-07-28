@@ -363,27 +363,29 @@ function UnassignedTransaction() {
                   Choose a budget to organize your transactions.
                 </p>
               </div>
-              {hasBudgets ? (
-                <div className="unconsidered-transactions-page__budget-grid">
-                  {budgetCards.map((budget) => (
-                    <DropBudgetCard
-                      key={budget.id}
-                      budget={budget}
-                      isActiveDrag={Boolean(activeDragId)}
-                      isAssigning={assigningBudgetId === budget.id}
-                      isSuccess={successBudgetId === budget.id}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div className="unconsidered-transactions-page__empty">
-                  <h4>Create your first budget</h4>
-                  <p>
-                    Add a budget to start organizing the transactions in this
-                    inbox.
-                  </p>
-                </div>
-              )}
+              <div className="unconsidered-transactions-page__panel-body">
+                {hasBudgets ? (
+                  <div className="unconsidered-transactions-page__budget-grid">
+                    {budgetCards.map((budget) => (
+                      <DropBudgetCard
+                        key={budget.id}
+                        budget={budget}
+                        isActiveDrag={Boolean(activeDragId)}
+                        isAssigning={assigningBudgetId === budget.id}
+                        isSuccess={successBudgetId === budget.id}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="unconsidered-transactions-page__empty">
+                    <h4>Create your first budget</h4>
+                    <p>
+                      Add a budget to start organizing the transactions in this
+                      inbox.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </section>
         </div>
