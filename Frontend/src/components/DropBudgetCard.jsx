@@ -1,3 +1,4 @@
+import { GripVertical } from "lucide-react";
 import { useDroppable } from "@dnd-kit/core";
 import {
   formatCurrency,
@@ -78,6 +79,10 @@ const DropBudgetCard = ({ budget, isActiveDrag, isAssigning, isSuccess }) => {
               }}
             />
           </div>
+        </div>
+
+        <div className="drop-budget-card__handle" aria-hidden="true">
+          <GripVertical size={15} />
         </div>
       </div>
 

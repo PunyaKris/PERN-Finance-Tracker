@@ -123,11 +123,30 @@
   display: inline-flex;
   align-items: baseline;
   gap: 6px;
-  font-weight: 800;
+  font-weight: 300;
   font-size: 1rem;
   min-width: 92px;
   justify-content: flex-end;
   flex-shrink: 0;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+.inbox-transaction-card__amount-sign {
+  font-weight: 350;
+  opacity: 0.9;
+  flex-shrink: 0;
+  translate: 0px -1px;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 .inbox-transaction-card__amount--expense {
@@ -136,9 +155,4 @@
 
 .inbox-transaction-card__amount--income {
   color: #74be78;
-}
-
-.inbox-transaction-card__amount-sign {
-  opacity: 0.9;
-  font-weight: 800;
 }
