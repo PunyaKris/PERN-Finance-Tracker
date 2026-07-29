@@ -11,11 +11,7 @@
 .dashboard-budget-list__panel {
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: linear-gradient(
-    180deg,
-    var(--surface) 0%,
-    var(--surface-muted) 100%
-  );
+  background: var(--card);
   box-shadow: 0 12px 28px
     color-mix(in srgb, var(--overlay-strong) 16%, transparent);
   overflow: hidden;

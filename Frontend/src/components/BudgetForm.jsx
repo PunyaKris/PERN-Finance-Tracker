@@ -297,7 +297,7 @@ const BudgetForm = ({ oldBudget, onBudgetSave }) => {
       <div className="budget-form__section">
         <label className="budget-form__label">Icon</label>
         <div className="budget-form__icon-picker">
-          <IconPicker selectedIcon={icon} onSelect={setIcon} />
+          <IconPicker selectedIcon={icon} onSelect={setIcon} variant="budget" />
         </div>
       </div>
 
@@ -320,7 +320,7 @@ const BudgetForm = ({ oldBudget, onBudgetSave }) => {
           disabled={isSubmitting}
           type="button"
         >
-          Create Budget
+          Save Budget
         </button>
       </div>
     </div>

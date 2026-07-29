@@ -98,9 +98,7 @@ const TransactionForm = ({
       nextErrors.amount = "Amount must be a number greater than zero.";
     }
 
-    if (!ofBudget) {
-      nextErrors.budget = "Please select a budget.";
-    } else {
+    if (ofBudget) {
       const normalizedBudgetType = normalizeType(ofBudget?.budgetType);
 
       if (
@@ -217,21 +215,26 @@ const TransactionForm = ({
   const shouldHideTransactionType =
     Boolean(fixedTransactionType) || hideTransactionTypeSelector;
 
+  const UNCONSIDERED_BUDGET_VALUE = "__unconsidered__";
+
   let BudgetSelector;
 
   if (!budgetId) {
     BudgetSelector = (
       <select
         className="transaction-form__select"
-        value={ofBudget ? ofBudget.id : ""}
+        value={ofBudget ? ofBudget.id : UNCONSIDERED_BUDGET_VALUE}
         onChange={(event) => {
+          const nextValue = event.target.value;
           setOfBudget(
-            budgets.find((budget) => budget.id === event.target.value),
+            nextValue === UNCONSIDERED_BUDGET_VALUE
+              ? null
+              : budgets.find((budget) => budget.id === nextValue),
           );
           setErrors((currentErrors) => ({ ...currentErrors, budget: "" }));
         }}
       >
-        <option value="">Select a budget</option>
+        <option value={UNCONSIDERED_BUDGET_VALUE}>No Budget (Unconsidered)</option>
         {budgets.map((budget) => (
           <option key={budget.id} value={budget.id}>
             {budget.name}
@@ -243,13 +246,13 @@ const TransactionForm = ({
     BudgetSelector = (
       <select
         className="transaction-form__select transaction-form__select--disabled"
-        value={ofBudget ? ofBudget.id : ""}
+        value={ofBudget ? ofBudget.id : UNCONSIDERED_BUDGET_VALUE}
         disabled
       >
         {ofBudget ? (
           <option value={ofBudget.id}>{ofBudget.name}</option>
         ) : (
-          <option value="">Selected budget</option>
+          <option value={UNCONSIDERED_BUDGET_VALUE}>No Budget (Unconsidered)</option>
         )}
       </select>
     );
@@ -373,7 +376,11 @@ const TransactionForm = ({
         <div className="transaction-form__field transaction-form__field--full">
           <label className="transaction-form__label">Icon</label>
           <div className="transaction-form__icon-section">
-            <IconPicker selectedIcon={icon} onSelect={setIcon} />
+            <IconPicker
+              selectedIcon={icon}
+              onSelect={setIcon}
+              variant="transaction"
+            />
           </div>
         </div>
 
